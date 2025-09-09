@@ -1,8 +1,3 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
 setup_host_tool(clang-tidy-confusable-chars-gen CLANG_TIDY_CONFUSABLE_CHARS_GEN clang_tidy_confusable_chars_gen clang_tidy_confusable_chars_gen_target)
 
 add_subdirectory(ConfusableTable)
@@ -17,7 +12,8 @@ add_custom_command(
 add_custom_target(genconfusable DEPENDS Confusables.inc)
 set_target_properties(genconfusable PROPERTIES FOLDER "Clang Tools Extra/Sourcegenning")
 
-add_clang_library(clangTidyMiscModule STATIC
+target_sources(clangTidy
+  PRIVATE
   ConstCorrectnessCheck.cpp
   CoroutineHostileRAIICheck.cpp
   DefinitionsInHeadersCheck.cpp
@@ -43,31 +39,9 @@ add_clang_library(clangTidyMiscModule STATIC
   UnusedUsingDeclsCheck.cpp
   UseAnonymousNamespaceCheck.cpp
   UseInternalLinkageCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  genconfusable
-  ClangDriverOptions
   )
 
-clang_target_link_libraries(clangTidyMiscModule
-  PRIVATE
-  clangAnalysis
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangFormat
-  clangLex
-  clangSerialization
-  clangTooling
-  clangToolingInclusions
-  clangToolingInclusionsStdlib
-  )
-target_link_libraries(clangTidyMiscModule
+target_link_libraries(clangTidy
   PRIVATE
   clangIncludeCleaner
   )

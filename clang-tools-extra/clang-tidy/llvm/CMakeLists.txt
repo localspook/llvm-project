@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyLLVMModule STATIC
+target_sources(clangTidy
+  PRIVATE
   HeaderGuardCheck.cpp
   IncludeOrderCheck.cpp
   LLVMTidyModule.cpp
@@ -12,23 +8,4 @@ add_clang_library(clangTidyLLVMModule STATIC
   PreferStaticOverAnonymousNamespaceCheck.cpp
   TwineLocalCheck.cpp
   UseNewMLIROpBuilderCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyReadabilityModule
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyLLVMModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
-  clangTooling
-  clangTransformer
   )

@@ -3,7 +3,6 @@ add_clang_library(clangTidyPlugin STATIC
 
   LINK_LIBS
   clangTidy
-  ${ALL_CLANG_TIDY_CHECKS}
 
   DEPENDS
   omp_gen

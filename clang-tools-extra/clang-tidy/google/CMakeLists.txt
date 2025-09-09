@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyGoogleModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AvoidCStyleCastsCheck.cpp
   AvoidNSObjectNewCheck.cpp
   AvoidThrowingObjCExceptionCheck.cpp
@@ -21,21 +17,4 @@ add_clang_library(clangTidyGoogleModule STATIC
   UnnamedNamespaceInHeaderCheck.cpp
   UpgradeGoogletestCaseCheck.cpp
   UsingNamespaceDirectiveCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyReadabilityModule
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyGoogleModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
   )

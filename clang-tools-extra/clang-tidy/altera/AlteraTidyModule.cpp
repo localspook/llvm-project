@@ -41,8 +41,4 @@ public:
 static ClangTidyModuleRegistry::Add<altera::AlteraModule>
     X("altera-module", "Adds Altera FPGA OpenCL lint checks.");
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the AlteraModule.
-volatile int AlteraModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

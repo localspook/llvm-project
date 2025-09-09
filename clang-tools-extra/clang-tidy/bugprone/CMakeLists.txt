@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  support
-  FrontendOpenMP
-  )
-
-add_clang_library(clangTidyBugproneModule STATIC
+target_sources(clangTidy
+  PRIVATE
   ArgumentCommentCheck.cpp
   AssertSideEffectCheck.cpp
   AssignmentInIfConditionCheck.cpp
@@ -102,26 +98,4 @@ add_clang_library(clangTidyBugproneModule STATIC
   UnusedReturnValueCheck.cpp
   UseAfterMoveCheck.cpp
   VirtualNearMissCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyBugproneModule
-  PRIVATE
-  clangAnalysis
-  clangAnalysisFlowSensitive
-  clangAnalysisFlowSensitiveModels
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
-  clangSema
-  clangTooling
-  clangTransformer
   )

@@ -51,8 +51,4 @@ static ClangTidyModuleRegistry::Add<ObjCModule>
 
 } // namespace objc
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the ObjCModule.
-volatile int ObjCModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

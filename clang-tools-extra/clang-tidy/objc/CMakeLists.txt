@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyObjCModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AssertEquals.cpp
   AvoidNSErrorInitCheck.cpp
   DeallocInCategoryCheck.cpp
@@ -14,20 +10,4 @@ add_clang_library(clangTidyObjCModule STATIC
   ObjCTidyModule.cpp
   PropertyDeclarationCheck.cpp
   SuperSelfCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyObjCModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
   )

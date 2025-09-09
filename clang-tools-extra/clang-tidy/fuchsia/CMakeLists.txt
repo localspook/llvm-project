@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyFuchsiaModule STATIC
+target_sources(clangTidy
+  PRIVATE
   DefaultArgumentsCallsCheck.cpp
   DefaultArgumentsDeclarationsCheck.cpp
   FuchsiaTidyModule.cpp
@@ -12,21 +8,4 @@ add_clang_library(clangTidyFuchsiaModule STATIC
   StaticallyConstructedObjectsCheck.cpp
   TrailingReturnCheck.cpp
   VirtualInheritanceCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyGoogleModule
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyFuchsiaModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
   )

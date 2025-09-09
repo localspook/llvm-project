@@ -98,8 +98,4 @@ static ClangTidyModuleRegistry::Add<GoogleModule> X("google-module",
 
 } // namespace google
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the GoogleModule.
-volatile int GoogleModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

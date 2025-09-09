@@ -40,9 +40,4 @@ static ClangTidyModuleRegistry::Add<PortabilityModule>
 
 } // namespace portability
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the PortabilityModule.
-// NOLINTNEXTLINE(misc-use-internal-linkage)
-volatile int PortabilityModuleAnchorSource = 0;
-
 } // namespace clang::tidy

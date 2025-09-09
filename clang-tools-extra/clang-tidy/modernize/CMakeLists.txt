@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyModernizeModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AvoidBindCheck.cpp
   AvoidCArraysCheck.cpp
   ConcatNestedNamespacesCheck.cpp
@@ -51,22 +47,4 @@ add_clang_library(clangTidyModernizeModule STATIC
   UseTransparentFunctorsCheck.cpp
   UseUncaughtExceptionsCheck.cpp
   UseUsingCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyReadabilityModule
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyModernizeModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
-  clangTooling
   )

@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyCppCoreGuidelinesModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AvoidCapturingLambdaCoroutinesCheck.cpp
   AvoidConstOrRefDataMembersCheck.cpp
   AvoidDoWhileCheck.cpp
@@ -36,28 +32,4 @@ add_clang_library(clangTidyCppCoreGuidelinesModule STATIC
   SpecialMemberFunctionsCheck.cpp
   UseEnumClassCheck.cpp
   VirtualClassDestructorCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyBugproneModule
-  clangTidyMiscModule
-  clangTidyModernizeModule
-  clangTidyPerformanceModule
-  clangTidyReadabilityModule
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyCppCoreGuidelinesModule
-  PRIVATE
-  clangAnalysis
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
-  clangSerialization
-  clangTooling
   )

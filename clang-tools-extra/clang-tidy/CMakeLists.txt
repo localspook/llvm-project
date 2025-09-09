@@ -30,14 +30,19 @@ clang_target_link_libraries(clangTidy
   clangAST
   clangASTMatchers
   clangAnalysis
+  clangAnalysisFlowSensitive
+  clangAnalysisFlowSensitiveModels
   clangBasic
   clangFormat
   clangFrontend
   clangLex
   clangRewrite
+  clangTransformer
   clangSerialization
   clangTooling
   clangToolingCore
+  clangToolingInclusions
+  clangToolingInclusionsStdlib
   )
 
 if(CLANG_TIDY_ENABLE_STATIC_ANALYZER)
@@ -45,11 +50,11 @@ if(CLANG_TIDY_ENABLE_STATIC_ANALYZER)
     PRIVATE
     clangStaticAnalyzerCore
     clangStaticAnalyzerFrontend
+    clangStaticAnalyzerCheckers
   )
 endif()
 
 # Checks.
-# If you add a check, also add it to ClangTidyForceLinker.h in this directory.
 add_subdirectory(android)
 add_subdirectory(abseil)
 add_subdirectory(altera)

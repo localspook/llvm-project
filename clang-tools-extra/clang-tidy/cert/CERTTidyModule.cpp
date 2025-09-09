@@ -356,8 +356,4 @@ static ClangTidyModuleRegistry::Add<cert::CERTModule>
     X("cert-module",
       "Adds lint checks corresponding to CERT secure coding guidelines.");
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the CERTModule.
-volatile int CERTModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

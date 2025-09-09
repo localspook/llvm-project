@@ -30,8 +30,4 @@ public:
 static ClangTidyModuleRegistry::Add<darwin::DarwinModule>
     X("darwin-module", "Adds Darwin-specific lint checks.");
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the DarwinModule.
-volatile int DarwinModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

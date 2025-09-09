@@ -61,8 +61,4 @@ static ClangTidyModuleRegistry::Add<LLVMModule> X("llvm-module",
 
 } // namespace llvm_check
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the LLVMModule.
-volatile int LLVMModuleAnchorSource = 0; // NOLINT(misc-use-internal-linkage)
-
 } // namespace clang::tidy

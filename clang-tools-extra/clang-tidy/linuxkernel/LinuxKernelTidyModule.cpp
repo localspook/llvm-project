@@ -28,9 +28,4 @@ static ClangTidyModuleRegistry::Add<LinuxKernelModule>
     X("linux-module", "Adds checks specific to the Linux kernel.");
 } // namespace linuxkernel
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the LinuxKernelModule.
-// NOLINTNEXTLINE(misc-use-internal-linkage)
-volatile int LinuxKernelModuleAnchorSource = 0;
-
 } // namespace clang::tidy

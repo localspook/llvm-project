@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  FrontendOpenMP
-  Support
-  )
-
-add_clang_library(clangTidyPerformanceModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AvoidEndlCheck.cpp
   EnumSizeCheck.cpp
   FasterStringFindCheck.cpp
@@ -25,21 +21,4 @@ add_clang_library(clangTidyPerformanceModule STATIC
   TypePromotionInMathFnCheck.cpp
   UnnecessaryCopyInitialization.cpp
   UnnecessaryValueParamCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyPerformanceModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangAnalysis
-  clangBasic
-  clangLex
   )

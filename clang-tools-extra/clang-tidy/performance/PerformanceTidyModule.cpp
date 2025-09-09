@@ -79,9 +79,4 @@ static ClangTidyModuleRegistry::Add<PerformanceModule>
 
 } // namespace performance
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the PerformanceModule.
-// NOLINTNEXTLINE(misc-use-internal-linkage)
-volatile int PerformanceModuleAnchorSource = 0;
-
 } // namespace clang::tidy

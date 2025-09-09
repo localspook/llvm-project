@@ -16,7 +16,6 @@
 
 #include "ClangTidyMain.h"
 #include "../ClangTidy.h"
-#include "../ClangTidyForceLinker.h"
 #include "../GlobList.h"
 #include "clang/Tooling/CommonOptionsParser.h"
 #include "llvm/ADT/StringSet.h"

@@ -32,9 +32,4 @@ public:
 static ClangTidyModuleRegistry::Add<concurrency::ConcurrencyModule>
     X("concurrency-module", "Adds concurrency checks.");
 
-// This anchor is used to force the linker to link in the generated object file
-// and thus register the ConcurrencyModule.
-// NOLINTNEXTLINE(misc-use-internal-linkage)
-volatile int ConcurrencyModuleAnchorSource = 0;
-
 } // namespace clang::tidy

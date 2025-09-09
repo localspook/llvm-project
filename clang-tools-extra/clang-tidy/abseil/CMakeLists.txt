@@ -1,9 +1,5 @@
-set(LLVM_LINK_COMPONENTS
-  support
-  FrontendOpenMP
-  )
-
-add_clang_library(clangTidyAbseilModule STATIC
+target_sources(clangTidy
+  PRIVATE
   AbseilTidyModule.cpp
   CleanupCtadCheck.cpp
   DurationAdditionCheck.cpp
@@ -25,22 +21,4 @@ add_clang_library(clangTidyAbseilModule STATIC
   TimeComparisonCheck.cpp
   TimeSubtractionCheck.cpp
   UpgradeDurationConversionsCheck.cpp
-
-  LINK_LIBS
-  clangTidy
-  clangTidyUtils
-
-  DEPENDS
-  omp_gen
-  ClangDriverOptions
-  )
-
-clang_target_link_libraries(clangTidyAbseilModule
-  PRIVATE
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangLex
-  clangTooling
-  clangTransformer
   )
