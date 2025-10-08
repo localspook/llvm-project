@@ -79,7 +79,7 @@ __partition(_ForwardIterator __first, _Sentinel __last, _Predicate&& __pred, _It
 template <class _ForwardIterator, class _Predicate>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _ForwardIterator
 partition(_ForwardIterator __first, _ForwardIterator __last, _Predicate __pred) {
-  using _IterCategory = typename iterator_traits<_ForwardIterator>::iterator_category;
+  using _IterCategory = iterator_traits<_ForwardIterator>::iterator_category;
   auto __result = std::__partition<_ClassicAlgPolicy>(std::move(__first), std::move(__last), __pred, _IterCategory());
   return __result.first;
 }

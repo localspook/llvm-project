@@ -30,8 +30,8 @@ template <class _Cl, class _Cr>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bit_iterator<_Cr, false> __swap_ranges_aligned(
     __bit_iterator<_Cl, false> __first, __bit_iterator<_Cl, false> __last, __bit_iterator<_Cr, false> __result) {
   using _I1             = __bit_iterator<_Cl, false>;
-  using difference_type = typename _I1::difference_type;
-  using __storage_type  = typename _I1::__storage_type;
+  using difference_type = _I1::difference_type;
+  using __storage_type  = _I1::__storage_type;
 
   const int __bits_per_word = _I1::__bits_per_word;
   difference_type __n       = __last - __first;
@@ -76,8 +76,8 @@ template <class _Cl, class _Cr>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bit_iterator<_Cr, false> __swap_ranges_unaligned(
     __bit_iterator<_Cl, false> __first, __bit_iterator<_Cl, false> __last, __bit_iterator<_Cr, false> __result) {
   using _I1             = __bit_iterator<_Cl, false>;
-  using difference_type = typename _I1::difference_type;
-  using __storage_type  = typename _I1::__storage_type;
+  using difference_type = _I1::difference_type;
+  using __storage_type  = _I1::__storage_type;
 
   const int __bits_per_word = _I1::__bits_per_word;
   difference_type __n       = __last - __first;

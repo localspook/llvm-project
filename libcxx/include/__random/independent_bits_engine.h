@@ -54,7 +54,7 @@ private:
   static_assert(0 < __w, "independent_bits_engine invalid parameters");
   static_assert(__w <= _Dt, "independent_bits_engine invalid parameters");
 
-  typedef typename _Engine::result_type _Engine_result_type;
+  typedef _Engine::result_type _Engine_result_type;
   typedef __conditional_t<sizeof(_Engine_result_type) <= sizeof(result_type), result_type, _Engine_result_type>
       _Working_result_type;
 #ifdef _LIBCPP_CXX03_LANG

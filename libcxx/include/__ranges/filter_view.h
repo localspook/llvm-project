@@ -115,7 +115,7 @@ struct __filter_iterator_category {};
 
 template <forward_range _View>
 struct __filter_iterator_category<_View> {
-  using _Cat _LIBCPP_NODEBUG = typename iterator_traits<iterator_t<_View>>::iterator_category;
+  using _Cat _LIBCPP_NODEBUG = iterator_traits<iterator_t<_View>>::iterator_category;
   using iterator_category =
       _If<derived_from<_Cat, bidirectional_iterator_tag>,
           bidirectional_iterator_tag,

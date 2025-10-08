@@ -58,7 +58,7 @@ template <class _Tp>
 struct __sfinae_underlying_type<_Tp, false> {};
 
 template <class _Tp>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR typename __sfinae_underlying_type<_Tp>::__promoted_type
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR __sfinae_underlying_type<_Tp>::__promoted_type
 __convert_to_integral(_Tp __val) {
   return __val;
 }

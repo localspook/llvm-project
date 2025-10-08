@@ -23,8 +23,8 @@ class __allocator_destructor {
   using __alloc_traits _LIBCPP_NODEBUG = allocator_traits<_Alloc>;
 
 public:
-  using pointer _LIBCPP_NODEBUG   = typename __alloc_traits::pointer;
-  using size_type _LIBCPP_NODEBUG = typename __alloc_traits::size_type;
+  using pointer _LIBCPP_NODEBUG   = __alloc_traits::pointer;
+  using size_type _LIBCPP_NODEBUG = __alloc_traits::size_type;
 
 private:
   _Alloc& __alloc_;

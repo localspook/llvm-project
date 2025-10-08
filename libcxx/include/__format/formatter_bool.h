@@ -36,14 +36,14 @@ template <__fmt_char_type _CharT>
 struct formatter<bool, _CharT> {
 public:
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     typename _ParseContext::iterator __result = __parser_.__parse(__ctx, __format_spec::__fields_integral);
     __format_spec::__process_parsed_bool(__parser_, "a bool");
     return __result;
   }
 
   template <class _FormatContext>
-  _LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator format(bool __value, _FormatContext& __ctx) const {
+  _LIBCPP_HIDE_FROM_ABI _FormatContext::iterator format(bool __value, _FormatContext& __ctx) const {
     switch (__parser_.__type_) {
     case __format_spec::__type::__default:
     case __format_spec::__type::__string:

@@ -77,7 +77,7 @@ template <class _SegmentedIterator,
                         int> = 0>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _SegmentedIterator
 __for_each_n(_SegmentedIterator __first, _Size __orig_n, _Func& __f, _Proj& __proj) {
-  using __local_iterator_t = typename __segmented_iterator_traits<_SegmentedIterator>::__local_iterator;
+  using __local_iterator_t = __segmented_iterator_traits<_SegmentedIterator>::__local_iterator;
   return std::__for_each_n_segment(__first, __orig_n, [&](__local_iterator_t __lfirst, __local_iterator_t __llast) {
     std::__for_each(__lfirst, __llast, __f, __proj);
   });

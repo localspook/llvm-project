@@ -47,13 +47,13 @@ public:
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 explicit front_insert_iterator(_Container& __x)
       : container(std::addressof(__x)) {}
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 front_insert_iterator&
-  operator=(const typename _Container::value_type& __value) {
+  operator=(const _Container::value_type& __value) {
     container->push_front(__value);
     return *this;
   }
 #ifndef _LIBCPP_CXX03_LANG
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 front_insert_iterator&
-  operator=(typename _Container::value_type&& __value) {
+  _LIBCPP_HIDE_FROM_ABI
+  _LIBCPP_CONSTEXPR_SINCE_CXX20 front_insert_iterator& operator=(_Container::value_type&& __value) {
     container->push_front(std::move(__value));
     return *this;
   }

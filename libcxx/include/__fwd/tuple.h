@@ -22,7 +22,7 @@ template <size_t, class>
 struct tuple_element;
 
 template <size_t _Np, class _Tp>
-using __tuple_element_t _LIBCPP_NODEBUG = typename tuple_element<_Np, _Tp>::type;
+using __tuple_element_t _LIBCPP_NODEBUG = tuple_element<_Np, _Tp>::type;
 
 #ifndef _LIBCPP_CXX03_LANG
 
@@ -44,19 +44,19 @@ template <class>
 struct tuple_size;
 
 template <size_t _Ip, class... _Tp>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 typename tuple_element<_Ip, tuple<_Tp...> >::type&
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 tuple_element<_Ip, tuple<_Tp...> >::type&
 get(tuple<_Tp...>&) _NOEXCEPT;
 
 template <size_t _Ip, class... _Tp>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 const typename tuple_element<_Ip, tuple<_Tp...> >::type&
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 const tuple_element<_Ip, tuple<_Tp...> >::type&
 get(const tuple<_Tp...>&) _NOEXCEPT;
 
 template <size_t _Ip, class... _Tp>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 typename tuple_element<_Ip, tuple<_Tp...> >::type&&
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 tuple_element<_Ip, tuple<_Tp...> >::type&&
 get(tuple<_Tp...>&&) _NOEXCEPT;
 
 template <size_t _Ip, class... _Tp>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 const typename tuple_element<_Ip, tuple<_Tp...> >::type&&
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 const tuple_element<_Ip, tuple<_Tp...> >::type&&
 get(const tuple<_Tp...>&&) _NOEXCEPT;
 
 #endif // _LIBCPP_CXX03_LANG

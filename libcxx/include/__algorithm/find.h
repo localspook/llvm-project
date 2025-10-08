@@ -163,7 +163,7 @@ template <bool _ToFind, class _Cp, bool _IsConst>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI __bit_iterator<_Cp, _IsConst>
 __find_bool(__bit_iterator<_Cp, _IsConst> __first, typename __size_difference_type_traits<_Cp>::size_type __n) {
   using _It            = __bit_iterator<_Cp, _IsConst>;
-  using __storage_type = typename _It::__storage_type;
+  using __storage_type = _It::__storage_type;
 
   const int __bits_per_word = _It::__bits_per_word;
   // do first partial word
@@ -200,9 +200,8 @@ inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bit_iterator<_Cp, _
 __find(__bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, const _Tp& __value, _Proj&) {
   if (static_cast<bool>(__value))
     return std::__find_bool<true>(
-        __first, static_cast<typename __size_difference_type_traits<_Cp>::size_type>(__last - __first));
-  return std::__find_bool<false>(
-      __first, static_cast<typename __size_difference_type_traits<_Cp>::size_type>(__last - __first));
+        __first, static_cast<__size_difference_type_traits<_Cp>::size_type>(__last - __first));
+  return std::__find_bool<false>(__first, static_cast<__size_difference_type_traits<_Cp>::size_type>(__last - __first));
 }
 
 // segmented iterator implementation

@@ -27,7 +27,7 @@ template <class _CharT>
 class basic_format_parse_context {
 public:
   using char_type      = _CharT;
-  using const_iterator = typename basic_string_view<_CharT>::const_iterator;
+  using const_iterator = basic_string_view<_CharT>::const_iterator;
   using iterator       = const_iterator;
 
   _LIBCPP_HIDE_FROM_ABI constexpr explicit basic_format_parse_context(

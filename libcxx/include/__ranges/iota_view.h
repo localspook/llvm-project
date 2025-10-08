@@ -65,14 +65,14 @@ struct __get_wider_signed {
         sizeof(_Int) <= sizeof(long long), "Found integer-like type that is bigger than largest integer like type.");
   }
 
-  using type = typename decltype(__call())::type;
+  using type = decltype(__call())::type;
 };
 
 template <class _Start>
 using _IotaDiffT _LIBCPP_NODEBUG =
-    typename _If< (!integral<_Start> || sizeof(iter_difference_t<_Start>) > sizeof(_Start)),
-                  type_identity<iter_difference_t<_Start>>,
-                  __get_wider_signed<_Start> >::type;
+    _If< (!integral<_Start> || sizeof(iter_difference_t<_Start>) > sizeof(_Start)),
+         type_identity<iter_difference_t<_Start>>,
+         __get_wider_signed<_Start> >::type;
 
 template <class _Iter>
 concept __decrementable = incrementable<_Iter> && requires(_Iter __i) {

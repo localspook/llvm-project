@@ -160,7 +160,7 @@ struct __transform_view_iterator_category_base {};
 
 template <forward_range _View, class _Fn>
 struct __transform_view_iterator_category_base<_View, _Fn> {
-  using _Cat _LIBCPP_NODEBUG = typename iterator_traits<iterator_t<_View>>::iterator_category;
+  using _Cat _LIBCPP_NODEBUG = iterator_traits<iterator_t<_View>>::iterator_category;
 
   using iterator_category =
       conditional_t< is_reference_v<invoke_result_t<_Fn&, range_reference_t<_View>>>,
@@ -192,7 +192,7 @@ class transform_view<_View, _Fn>::__iterator
 public:
   iterator_t<_Base> __current_ = iterator_t<_Base>();
 
-  using iterator_concept = typename __transform_view_iterator_concept<_View>::type;
+  using iterator_concept = __transform_view_iterator_concept<_View>::type;
   using value_type       = remove_cvref_t<invoke_result_t<__maybe_const<_Const, _Fn>&, range_reference_t<_Base>>>;
   using difference_type  = range_difference_t<_Base>;
 

@@ -41,7 +41,7 @@ __pop_heap(_RandomAccessIterator __first,
 
   __comp_ref_type<_Compare> __comp_ref = __comp;
 
-  using value_type = typename iterator_traits<_RandomAccessIterator>::value_type;
+  using value_type = iterator_traits<_RandomAccessIterator>::value_type;
   if (__len > 1) {
     value_type __top             = _IterOps<_AlgPolicy>::__iter_move(__first); // create a hole at __first
     _RandomAccessIterator __hole = std::__floyd_sift_down<_AlgPolicy>(__first, __comp_ref, __len);

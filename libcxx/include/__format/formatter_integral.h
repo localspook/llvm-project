@@ -282,7 +282,7 @@ _LIBCPP_HIDE_FROM_ABI _OutIt __write_using_decimal_separators(
 
 template <unsigned_integral _Tp, contiguous_iterator _Iterator, class _CharT, class _FormatContext>
   requires same_as<char, iter_value_t<_Iterator>>
-_LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator __format_integer(
+_LIBCPP_HIDE_FROM_ABI _FormatContext::iterator __format_integer(
     _Tp __value,
     _FormatContext& __ctx,
     __format_spec::__parsed_specifications<_CharT> __specs,
@@ -342,7 +342,7 @@ _LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator __format_integer(
 }
 
 template <unsigned_integral _Tp, class _CharT, class _FormatContext>
-_LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator
+_LIBCPP_HIDE_FROM_ABI _FormatContext::iterator
 __format_integer(_Tp __value,
                  _FormatContext& __ctx,
                  __format_spec::__parsed_specifications<_CharT> __specs,
@@ -383,7 +383,7 @@ __format_integer(_Tp __value,
 }
 
 template <signed_integral _Tp, class _CharT, class _FormatContext>
-_LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator
+_LIBCPP_HIDE_FROM_ABI _FormatContext::iterator
 __format_integer(_Tp __value, _FormatContext& __ctx, __format_spec::__parsed_specifications<_CharT> __specs) {
   // Depending on the std-format-spec string the sign and the value
   // might not be outputted together:
@@ -421,7 +421,7 @@ struct __bool_strings<wchar_t> {
 #  endif
 
 template <class _CharT, class _FormatContext>
-_LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator
+_LIBCPP_HIDE_FROM_ABI _FormatContext::iterator
 __format_bool(bool __value, _FormatContext& __ctx, __format_spec::__parsed_specifications<_CharT> __specs) {
 #  if _LIBCPP_HAS_LOCALIZATION
   if (__specs.__std_.__locale_specific_form_) {

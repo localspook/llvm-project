@@ -45,7 +45,7 @@ __reverse_impl(_RandomAccessIterator __first, _RandomAccessIterator __last, rand
 
 template <class _AlgPolicy, class _BidirectionalIterator, class _Sentinel>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 void __reverse(_BidirectionalIterator __first, _Sentinel __last) {
-  using _IterCategory = typename _IterOps<_AlgPolicy>::template __iterator_category<_BidirectionalIterator>;
+  using _IterCategory = _IterOps<_AlgPolicy>::template __iterator_category<_BidirectionalIterator>;
   std::__reverse_impl<_AlgPolicy>(std::move(__first), std::move(__last), _IterCategory());
 }
 

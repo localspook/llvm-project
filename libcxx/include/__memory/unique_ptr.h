@@ -154,15 +154,15 @@ private:
   using _DeleterSFINAE _LIBCPP_NODEBUG = __unique_ptr_deleter_sfinae<_Dp>;
 
   template <bool _Dummy>
-  using _LValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__lval_ref_type;
+  using _LValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__lval_ref_type;
 
   template <bool _Dummy>
-  using _GoodRValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__good_rval_ref_type;
+  using _GoodRValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__good_rval_ref_type;
 
   template <bool _Dummy>
-  using _BadRValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__bad_rval_ref_type;
+  using _BadRValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__bad_rval_ref_type;
 
-  template <bool _Dummy, class _Deleter = typename __dependent_type< __type_identity<deleter_type>, _Dummy>::type>
+  template <bool _Dummy, class _Deleter = __dependent_type< __type_identity<deleter_type>, _Dummy>::type>
   using _EnableIfDeleterDefaultConstructible _LIBCPP_NODEBUG =
       __enable_if_t<is_default_constructible<_Deleter>::value && !is_pointer<_Deleter>::value>;
 
@@ -441,15 +441,15 @@ private:
   typedef __unique_ptr_deleter_sfinae<_Dp> _DeleterSFINAE;
 
   template <bool _Dummy>
-  using _LValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__lval_ref_type;
+  using _LValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__lval_ref_type;
 
   template <bool _Dummy>
-  using _GoodRValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__good_rval_ref_type;
+  using _GoodRValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__good_rval_ref_type;
 
   template <bool _Dummy>
-  using _BadRValRefType _LIBCPP_NODEBUG = typename __dependent_type<_DeleterSFINAE, _Dummy>::__bad_rval_ref_type;
+  using _BadRValRefType _LIBCPP_NODEBUG = __dependent_type<_DeleterSFINAE, _Dummy>::__bad_rval_ref_type;
 
-  template <bool _Dummy, class _Deleter = typename __dependent_type< __type_identity<deleter_type>, _Dummy>::type>
+  template <bool _Dummy, class _Deleter = __dependent_type< __type_identity<deleter_type>, _Dummy>::type>
   using _EnableIfDeleterDefaultConstructible _LIBCPP_NODEBUG =
       __enable_if_t<is_default_constructible<_Deleter>::value && !is_pointer<_Deleter>::value>;
 
@@ -459,7 +459,7 @@ private:
   template <class _Pp>
   using _EnableIfPointerConvertible _LIBCPP_NODEBUG = __enable_if_t< _CheckArrayPointerConversion<_Pp>::value >;
 
-  template <class _UPtr, class _Up, class _ElemT = typename _UPtr::element_type>
+  template <class _UPtr, class _Up, class _ElemT = _UPtr::element_type>
   using _EnableIfMoveConvertible _LIBCPP_NODEBUG =
       __enable_if_t< is_array<_Up>::value && is_same<pointer, element_type*>::value &&
                      is_same<typename _UPtr::pointer, _ElemT*>::value &&
@@ -647,9 +647,9 @@ inline _LIBCPP_HIDE_FROM_ABI bool operator!=(const unique_ptr<_T1, _D1>& __x, co
 
 template <class _T1, class _D1, class _T2, class _D2>
 inline _LIBCPP_HIDE_FROM_ABI bool operator<(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {
-  typedef typename unique_ptr<_T1, _D1>::pointer _P1;
-  typedef typename unique_ptr<_T2, _D2>::pointer _P2;
-  typedef typename common_type<_P1, _P2>::type _Vp;
+  typedef unique_ptr<_T1, _D1>::pointer _P1;
+  typedef unique_ptr<_T2, _D2>::pointer _P2;
+  typedef common_type<_P1, _P2>::type _Vp;
   return less<_Vp>()(__x.get(), __y.get());
 }
 
@@ -703,13 +703,13 @@ inline _LIBCPP_HIDE_FROM_ABI bool operator!=(nullptr_t, const unique_ptr<_T1, _D
 
 template <class _T1, class _D1>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
-  typedef typename unique_ptr<_T1, _D1>::pointer _P1;
+  typedef unique_ptr<_T1, _D1>::pointer _P1;
   return less<_P1>()(__x.get(), nullptr);
 }
 
 template <class _T1, class _D1>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
-  typedef typename unique_ptr<_T1, _D1>::pointer _P1;
+  typedef unique_ptr<_T1, _D1>::pointer _P1;
   return less<_P1>()(nullptr, __x.get());
 }
 
@@ -748,7 +748,7 @@ template <class _T1, class _D1>
   requires three_way_comparable< typename unique_ptr<_T1, _D1>::pointer>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 compare_three_way_result_t<typename unique_ptr<_T1, _D1>::pointer>
 operator<=>(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
-  return compare_three_way()(__x.get(), static_cast<typename unique_ptr<_T1, _D1>::pointer>(nullptr));
+  return compare_three_way()(__x.get(), static_cast<unique_ptr<_T1, _D1>::pointer>(nullptr));
 }
 #endif
 
@@ -803,7 +803,7 @@ struct hash<__enable_hash_helper< unique_ptr<_Tp, _Dp>, typename unique_ptr<_Tp,
 #endif
 
   _LIBCPP_HIDE_FROM_ABI size_t operator()(const unique_ptr<_Tp, _Dp>& __ptr) const {
-    typedef typename unique_ptr<_Tp, _Dp>::pointer pointer;
+    typedef unique_ptr<_Tp, _Dp>::pointer pointer;
     return hash<pointer>()(__ptr.get());
   }
 };

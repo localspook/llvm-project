@@ -36,7 +36,7 @@ public:
   typedef _UIntType result_type;
 
 private:
-  typedef typename _Engine::result_type _Engine_result_type;
+  typedef _Engine::result_type _Engine_result_type;
   typedef __conditional_t<sizeof(_Engine_result_type) <= sizeof(result_type), result_type, _Engine_result_type>
       _Working_result_type;
 
@@ -134,19 +134,19 @@ _UIntType __independent_bits_engine<_Engine, _UIntType>::__eval(true_type) {
 }
 
 template <class _IntType = int>
-class uniform_int_distribution {
+class NotDependent {
   static_assert(__libcpp_random_is_valid_inttype<_IntType>::value, "IntType must be a supported integer type");
 
 public:
   // types
   typedef _IntType result_type;
 
-  class param_type {
+  class R {
     result_type __a_;
     result_type __b_;
 
   public:
-    typedef uniform_int_distribution distribution_type;
+    typedef NotDependent distribution_type;
 
     _LIBCPP_HIDE_FROM_ABI explicit param_type(result_type __a = 0, result_type __b = numeric_limits<result_type>::max())
         : __a_(__a), __b_(__b) {}
@@ -161,7 +161,7 @@ public:
   };
 
 private:
-  param_type __p_;
+  R __p_;
 
 public:
   // constructors and reset functions
@@ -174,7 +174,7 @@ public:
   explicit uniform_int_distribution(result_type __a = 0, result_type __b = numeric_limits<result_type>::max())
       : __p_(param_type(__a, __b)) {}
 #endif
-  _LIBCPP_HIDE_FROM_ABI explicit uniform_int_distribution(const param_type& __p) : __p_(__p) {}
+  _LIBCPP_HIDE_FROM_ABI explicit uniform_int_distribution(const R& __p) : __p_(__p) {}
   _LIBCPP_HIDE_FROM_ABI void reset() {}
 
   // generating functions
@@ -207,7 +207,7 @@ public:
 
 template <class _IntType>
 template <class _URNG>
-typename uniform_int_distribution<_IntType>::result_type uniform_int_distribution<_IntType>::operator()(
+uniform_int_distribution<_IntType>::result_type uniform_int_distribution<_IntType>::operator()(
     _URNG& __g, const param_type& __p) _LIBCPP_DISABLE_UBSAN_UNSIGNED_INTEGER_CHECK {
   static_assert(__libcpp_random_is_valid_urng<_URNG>::value, "");
   typedef __conditional_t<sizeof(result_type) <= sizeof(uint32_t), uint32_t, __make_unsigned_t<result_type> > _UIntType;
@@ -244,8 +244,8 @@ template <class _CharT, class _Traits, class _IT>
 _LIBCPP_HIDE_FROM_ABI basic_istream<_CharT, _Traits>&
 operator>>(basic_istream<_CharT, _Traits>& __is, uniform_int_distribution<_IT>& __x) {
   typedef uniform_int_distribution<_IT> _Eng;
-  typedef typename _Eng::result_type result_type;
-  typedef typename _Eng::param_type param_type;
+  typedef _Eng::result_type result_type;
+  typedef _Eng::param_type param_type;
   __save_flags<_CharT, _Traits> __lx(__is);
   typedef basic_istream<_CharT, _Traits> _Istream;
   __is.flags(_Istream::dec | _Istream::skipws);

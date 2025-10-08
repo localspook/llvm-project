@@ -32,7 +32,7 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 
 // generic implementation
 template <class _AlgPolicy, class _Iter, class _Sent, class _Tp, class _Proj>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename _IterOps<_AlgPolicy>::template __difference_type<_Iter>
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _IterOps<_AlgPolicy>::template __difference_type<_Iter>
 __count(_Iter __first, _Sent __last, const _Tp& __value, _Proj& __proj) {
   typename _IterOps<_AlgPolicy>::template __difference_type<_Iter> __r(0);
   for (; __first != __last; ++__first)
@@ -43,11 +43,11 @@ __count(_Iter __first, _Sent __last, const _Tp& __value, _Proj& __proj) {
 
 // __bit_iterator implementation
 template <bool _ToCount, class _Cp, bool _IsConst>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename __bit_iterator<_Cp, _IsConst>::difference_type
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bit_iterator<_Cp, _IsConst>::difference_type
 __count_bool(__bit_iterator<_Cp, _IsConst> __first, typename __size_difference_type_traits<_Cp>::size_type __n) {
   using _It             = __bit_iterator<_Cp, _IsConst>;
-  using __storage_type  = typename _It::__storage_type;
-  using difference_type = typename _It::difference_type;
+  using __storage_type  = _It::__storage_type;
+  using difference_type = _It::difference_type;
 
   const int __bits_per_word = _It::__bits_per_word;
   difference_type __r       = 0;
@@ -76,9 +76,9 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __iter_diff_t<__bit_iterator
 __count(__bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, const _Tp& __value, _Proj&) {
   if (__value)
     return std::__count_bool<true>(
-        __first, static_cast<typename __size_difference_type_traits<_Cp>::size_type>(__last - __first));
+        __first, static_cast<__size_difference_type_traits<_Cp>::size_type>(__last - __first));
   return std::__count_bool<false>(
-      __first, static_cast<typename __size_difference_type_traits<_Cp>::size_type>(__last - __first));
+      __first, static_cast<__size_difference_type_traits<_Cp>::size_type>(__last - __first));
 }
 
 template <class _InputIterator, class _Tp>

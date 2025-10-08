@@ -49,7 +49,7 @@ template <class _InputIterator,
           __enable_if_t<__has_random_access_iterator_category<_InputIterator>::value, int> = 0>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _OutputIterator
 copy_n(_InputIterator __first, _Size __orig_n, _OutputIterator __result) {
-  typedef typename iterator_traits<_InputIterator>::difference_type difference_type;
+  typedef iterator_traits<_InputIterator>::difference_type difference_type;
   typedef decltype(std::__convert_to_integral(__orig_n)) _IntegralSize;
   _IntegralSize __n = __orig_n;
   return std::copy(__first, __first + difference_type(__n), __result);

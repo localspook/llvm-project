@@ -43,8 +43,8 @@ __equal_unaligned(__bit_iterator<_Cp, _IsConst1> __first1,
                   __bit_iterator<_Cp, _IsConst1> __last1,
                   __bit_iterator<_Cp, _IsConst2> __first2) {
   using _It             = __bit_iterator<_Cp, _IsConst1>;
-  using difference_type = typename _It::difference_type;
-  using __storage_type  = typename _It::__storage_type;
+  using difference_type = _It::difference_type;
+  using __storage_type  = _It::__storage_type;
 
   const int __bits_per_word = _It::__bits_per_word;
   difference_type __n       = __last1 - __first1;
@@ -121,8 +121,8 @@ __equal_aligned(__bit_iterator<_Cp, _IsConst1> __first1,
                 __bit_iterator<_Cp, _IsConst1> __last1,
                 __bit_iterator<_Cp, _IsConst2> __first2) {
   using _It             = __bit_iterator<_Cp, _IsConst1>;
-  using difference_type = typename _It::difference_type;
-  using __storage_type  = typename _It::__storage_type;
+  using difference_type = _It::difference_type;
+  using __storage_type  = _It::__storage_type;
 
   const int __bits_per_word = _It::__bits_per_word;
   difference_type __n       = __last1 - __first1;

@@ -333,7 +333,7 @@ struct __unsigned_integer_of_size<16> {
 #  endif
 
 template <size_t _Size>
-using __unsigned_integer_of_size_t _LIBCPP_NODEBUG = typename __unsigned_integer_of_size<_Size>::type;
+using __unsigned_integer_of_size_t _LIBCPP_NODEBUG = __unsigned_integer_of_size<_Size>::type;
 
 template <class _Sc>
 using __unsigned_representation_for_t _LIBCPP_NODEBUG = __unsigned_integer_of_size_t<sizeof(_Sc)>;

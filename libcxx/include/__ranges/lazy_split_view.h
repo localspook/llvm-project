@@ -334,7 +334,7 @@ private:
 
   public:
     // using iterator_category = inherited;
-    using iterator_concept = typename __outer_iterator<_Const>::iterator_concept;
+    using iterator_concept = __outer_iterator<_Const>::iterator_concept;
     using value_type       = range_value_t<_Base>;
     using difference_type  = range_difference_t<_Base>;
 

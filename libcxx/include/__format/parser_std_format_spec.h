@@ -351,7 +351,7 @@ public:
   // functions are used. In that case the error will be detected during
   // compilation and there is no need to pay for the run-time overhead.
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator __parse(_ParseContext& __ctx, __fields __fields) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator __parse(_ParseContext& __ctx, __fields __fields) {
     auto __begin = __ctx.begin();
     auto __end   = __ctx.end();
     if (__begin == __end || *__begin == _CharT('}') || (__fields.__use_range_fill_ && *__begin == _CharT(':')))
@@ -1102,7 +1102,7 @@ _LIBCPP_HIDE_FROM_ABI constexpr bool __is_ascii(char32_t __c) { return __c < 0x8
 /// \param __rounding Selects the rounding method.
 ///                   \c __down result.__width_ <= __maximum
 ///                   \c __up result.__width_ <= __maximum + 1
-template <class _CharT, class _Iterator = typename basic_string_view<_CharT>::const_iterator>
+template <class _CharT, class _Iterator = basic_string_view<_CharT>::const_iterator>
 _LIBCPP_HIDE_FROM_ABI constexpr __column_width_result<_Iterator> __estimate_column_width(
     basic_string_view<_CharT> __str, size_t __maximum, __column_width_rounding __rounding) noexcept {
   // The width estimation is done in two steps:

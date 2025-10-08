@@ -34,10 +34,10 @@ public:
   // types:
   typedef _Elem char_type;
   typedef _Tr traits_type;
-  typedef typename traits_type::int_type int_type;
-  typedef typename traits_type::pos_type pos_type;
-  typedef typename traits_type::off_type off_type;
-  typedef typename _Codecvt::state_type state_type;
+  typedef traits_type::int_type int_type;
+  typedef traits_type::pos_type pos_type;
+  typedef traits_type::off_type off_type;
+  typedef _Codecvt::state_type state_type;
 
 private:
   char* __extbuf_;
@@ -126,7 +126,7 @@ wbuffer_convert<_Codecvt, _Elem, _Tr>::~wbuffer_convert() {
 }
 
 template <class _Codecvt, class _Elem, class _Tr>
-typename wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecvt, _Elem, _Tr>::underflow() {
+wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecvt, _Elem, _Tr>::underflow() {
   _LIBCPP_SUPPRESS_DEPRECATED_POP
   if (__cv_ == 0 || __bufptr_ == nullptr)
     return traits_type::eof();
@@ -182,8 +182,7 @@ typename wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecv
 
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 template <class _Codecvt, class _Elem, class _Tr>
-typename wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type
-wbuffer_convert<_Codecvt, _Elem, _Tr>::pbackfail(int_type __c) {
+wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecvt, _Elem, _Tr>::pbackfail(int_type __c) {
   _LIBCPP_SUPPRESS_DEPRECATED_POP
   if (__cv_ != 0 && __bufptr_ && this->eback() < this->gptr()) {
     if (traits_type::eq_int_type(__c, traits_type::eof())) {
@@ -201,7 +200,7 @@ wbuffer_convert<_Codecvt, _Elem, _Tr>::pbackfail(int_type __c) {
 
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 template <class _Codecvt, class _Elem, class _Tr>
-typename wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecvt, _Elem, _Tr>::overflow(int_type __c) {
+wbuffer_convert<_Codecvt, _Elem, _Tr>::int_type wbuffer_convert<_Codecvt, _Elem, _Tr>::overflow(int_type __c) {
   _LIBCPP_SUPPRESS_DEPRECATED_POP
   if (__cv_ == 0 || !__bufptr_)
     return traits_type::eof();
@@ -292,7 +291,7 @@ basic_streambuf<_Elem, _Tr>* wbuffer_convert<_Codecvt, _Elem, _Tr>::setbuf(char_
 
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 template <class _Codecvt, class _Elem, class _Tr>
-typename wbuffer_convert<_Codecvt, _Elem, _Tr>::pos_type
+wbuffer_convert<_Codecvt, _Elem, _Tr>::pos_type
 wbuffer_convert<_Codecvt, _Elem, _Tr>::seekoff(off_type __off, ios_base::seekdir __way, ios_base::openmode __om) {
   int __width = __cv_->encoding();
   if (__cv_ == 0 || !__bufptr_ || (__width <= 0 && __off != 0) || sync())
@@ -306,7 +305,7 @@ wbuffer_convert<_Codecvt, _Elem, _Tr>::seekoff(off_type __off, ios_base::seekdir
 }
 
 template <class _Codecvt, class _Elem, class _Tr>
-typename wbuffer_convert<_Codecvt, _Elem, _Tr>::pos_type
+wbuffer_convert<_Codecvt, _Elem, _Tr>::pos_type
 wbuffer_convert<_Codecvt, _Elem, _Tr>::seekpos(pos_type __sp, ios_base::openmode __wch) {
   if (__cv_ == 0 || !__bufptr_ || sync())
     return pos_type(off_type(-1));

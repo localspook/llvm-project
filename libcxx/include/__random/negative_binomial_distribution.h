@@ -137,8 +137,8 @@ template <class _CharT, class _Traits, class _IntType>
 _LIBCPP_HIDE_FROM_ABI basic_istream<_CharT, _Traits>&
 operator>>(basic_istream<_CharT, _Traits>& __is, negative_binomial_distribution<_IntType>& __x) {
   typedef negative_binomial_distribution<_IntType> _Eng;
-  typedef typename _Eng::result_type result_type;
-  typedef typename _Eng::param_type param_type;
+  typedef _Eng::result_type result_type;
+  typedef _Eng::param_type param_type;
   __save_flags<_CharT, _Traits> __lx(__is);
   typedef basic_istream<_CharT, _Traits> _Istream;
   __is.flags(_Istream::dec | _Istream::skipws);

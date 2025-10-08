@@ -35,7 +35,7 @@ struct __coroutine_traits_sfinae {};
 
 template <class _Tp>
 struct __coroutine_traits_sfinae< _Tp, __void_t<typename _Tp::promise_type> > {
-  using promise_type = typename _Tp::promise_type;
+  using promise_type = _Tp::promise_type;
 };
 
 template <class _Ret, class... _Args>

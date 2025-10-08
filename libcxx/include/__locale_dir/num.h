@@ -642,7 +642,7 @@ _InputIterator num_get<_CharT, _InputIterator>::do_get(
   }
   const ctype<_CharT>& __ct    = std::use_facet<ctype<_CharT> >(__iob.getloc());
   const numpunct<_CharT>& __np = std::use_facet<numpunct<_CharT> >(__iob.getloc());
-  typedef typename numpunct<_CharT>::string_type string_type;
+  typedef numpunct<_CharT>::string_type string_type;
   const string_type __names[2] = {__np.truename(), __np.falsename()};
   const string_type* __i       = std::__scan_keyword(__b, __e, __names, __names + 2, __ct, __err);
   __v                          = __i == __names;
@@ -883,7 +883,7 @@ num_put<_CharT, _OutputIterator>::do_put(iter_type __s, ios_base& __iob, char_ty
   if ((__iob.flags() & ios_base::boolalpha) == 0)
     return do_put(__s, __iob, __fl, (unsigned long)__v);
   const numpunct<char_type>& __np = std::use_facet<numpunct<char_type> >(__iob.getloc());
-  typedef typename numpunct<char_type>::string_type string_type;
+  typedef numpunct<char_type>::string_type string_type;
   string_type __nm = __v ? __np.truename() : __np.falsename();
   for (typename string_type::iterator __i = __nm.begin(); __i != __nm.end(); ++__i, ++__s)
     *__s = *__i;
@@ -898,7 +898,7 @@ _LIBCPP_HIDE_FROM_ABI inline _OutputIterator num_put<_CharT, _OutputIterator>::_
 
   // Worst case is octal, with showbase enabled. Note that octal is always
   // printed as an unsigned value.
-  using _Unsigned = typename make_unsigned<_Integral>::type;
+  using _Unsigned = make_unsigned<_Integral>::type;
   _LIBCPP_CONSTEXPR const unsigned __buffer_size =
       (numeric_limits<_Unsigned>::digits / 3)          // 1 char per 3 bits
       + ((numeric_limits<_Unsigned>::digits % 3) != 0) // round up

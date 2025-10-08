@@ -42,7 +42,7 @@ template <class _SegmentedIterator,
           __enable_if_t<__is_segmented_iterator_v<_SegmentedIterator>, int> = 0>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _SegmentedIterator
 __for_each(_SegmentedIterator __first, _SegmentedIterator __last, _Func& __func, _Proj& __proj) {
-  using __local_iterator_t = typename __segmented_iterator_traits<_SegmentedIterator>::__local_iterator;
+  using __local_iterator_t = __segmented_iterator_traits<_SegmentedIterator>::__local_iterator;
   std::__for_each_segment(__first, __last, [&](__local_iterator_t __lfirst, __local_iterator_t __llast) {
     std::__for_each(__lfirst, __llast, __func, __proj);
   });

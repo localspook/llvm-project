@@ -150,7 +150,7 @@ public:
 template <class _CharT>
 class basic_format_context<typename __format::__retarget_buffer<_CharT>::__iterator, _CharT> {
 public:
-  using iterator  = typename __format::__retarget_buffer<_CharT>::__iterator;
+  using iterator  = __format::__retarget_buffer<_CharT>::__iterator;
   using char_type = _CharT;
   template <class _Tp>
   using formatter_type = formatter<_Tp, _CharT>;

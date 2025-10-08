@@ -50,7 +50,7 @@ _LIBCPP_PUSH_MACROS
 
 _LIBCPP_BEGIN_NAMESPACE_STD
 
-template <class _Compare, class _Iter, class _Tp = typename iterator_traits<_Iter>::value_type>
+template <class _Compare, class _Iter, class _Tp = iterator_traits<_Iter>::value_type>
 inline const bool __use_branchless_sort =
     __libcpp_is_contiguous_iterator<_Iter>::value && __is_cheap_to_copy<_Tp> && is_arithmetic<_Tp>::value &&
     (__desugars_to_v<__less_tag, _Compare, _Tp, _Tp> || __desugars_to_v<__greater_tag, _Compare, _Tp, _Tp>);
@@ -67,7 +67,7 @@ template <class _Compare, class _RandomAccessIterator>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 bool
 __cond_swap(_RandomAccessIterator __x, _RandomAccessIterator __y, _Compare __c) {
   // Note: this function behaves correctly even with proxy iterators (because it relies on `value_type`).
-  using value_type = typename iterator_traits<_RandomAccessIterator>::value_type;
+  using value_type = iterator_traits<_RandomAccessIterator>::value_type;
   bool __r         = __c(*__x, *__y);
   value_type __tmp = __r ? *__x : *__y;
   *__y             = __r ? *__y : *__x;
@@ -81,7 +81,7 @@ template <class _Compare, class _RandomAccessIterator>
 inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 bool
 __partially_sorted_swap(_RandomAccessIterator __x, _RandomAccessIterator __y, _RandomAccessIterator __z, _Compare __c) {
   // Note: this function behaves correctly even with proxy iterators (because it relies on `value_type`).
-  using value_type = typename iterator_traits<_RandomAccessIterator>::value_type;
+  using value_type = iterator_traits<_RandomAccessIterator>::value_type;
   bool __r1        = __c(*__z, *__x);
   value_type __tmp = __r1 ? *__z : *__x;
   *__z             = __r1 ? *__x : *__z;
@@ -244,7 +244,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void
 __insertion_sort(_BidirectionalIterator __first, _BidirectionalIterator __last, _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
+  typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
   if (__first == __last)
     return;
   _BidirectionalIterator __i = __first;
@@ -273,8 +273,8 @@ template <class _AlgPolicy, class _Compare, class _RandomAccessIterator>
 _LIBCPP_HIDE_FROM_ABI void
 __insertion_sort_unguarded(_RandomAccessIterator const __first, _RandomAccessIterator __last, _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
-  typedef typename iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::value_type value_type;
   if (__first == __last)
     return;
   const _RandomAccessIterator __leftmost = __first - difference_type(1);
@@ -302,7 +302,7 @@ _LIBCPP_HIDE_FROM_ABI bool
 __insertion_sort_incomplete(_RandomAccessIterator __first, _RandomAccessIterator __last, _Comp __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   switch (__last - __first) {
   case 0:
   case 1:
@@ -328,7 +328,7 @@ __insertion_sort_incomplete(_RandomAccessIterator __first, _RandomAccessIterator
         __comp);
     return true;
   }
-  typedef typename iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::value_type value_type;
   _RandomAccessIterator __j = __first + difference_type(2);
   std::__sort3<_AlgPolicy, _Comp>(__first, __first + difference_type(1), __j, __comp);
   const unsigned __limit = 8;
@@ -355,7 +355,7 @@ template <class _AlgPolicy, class _RandomAccessIterator>
 inline _LIBCPP_HIDE_FROM_ABI void __swap_bitmap_pos(
     _RandomAccessIterator __first, _RandomAccessIterator __last, uint64_t& __left_bitset, uint64_t& __right_bitset) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   // Swap one pair on each iteration as long as both bitsets have at least one
   // element for swapping.
   while (__left_bitset != 0 && __right_bitset != 0) {
@@ -369,7 +369,7 @@ inline _LIBCPP_HIDE_FROM_ABI void __swap_bitmap_pos(
 
 template <class _Compare,
           class _RandomAccessIterator,
-          class _ValueType = typename iterator_traits<_RandomAccessIterator>::value_type>
+          class _ValueType = iterator_traits<_RandomAccessIterator>::value_type>
 inline _LIBCPP_HIDE_FROM_ABI void
 __populate_left_bitset(_RandomAccessIterator __first, _Compare __comp, _ValueType& __pivot, uint64_t& __left_bitset) {
   // Possible vectorization. With a proper "-march" flag, the following loop
@@ -385,7 +385,7 @@ __populate_left_bitset(_RandomAccessIterator __first, _Compare __comp, _ValueTyp
 
 template <class _Compare,
           class _RandomAccessIterator,
-          class _ValueType = typename iterator_traits<_RandomAccessIterator>::value_type>
+          class _ValueType = iterator_traits<_RandomAccessIterator>::value_type>
 inline _LIBCPP_HIDE_FROM_ABI void
 __populate_right_bitset(_RandomAccessIterator __lm1, _Compare __comp, _ValueType& __pivot, uint64_t& __right_bitset) {
   // Possible vectorization. With a proper "-march" flag, the following loop
@@ -402,7 +402,7 @@ __populate_right_bitset(_RandomAccessIterator __lm1, _Compare __comp, _ValueType
 template <class _AlgPolicy,
           class _Compare,
           class _RandomAccessIterator,
-          class _ValueType = typename iterator_traits<_RandomAccessIterator>::value_type>
+          class _ValueType = iterator_traits<_RandomAccessIterator>::value_type>
 inline _LIBCPP_HIDE_FROM_ABI void __bitset_partition_partial_blocks(
     _RandomAccessIterator& __first,
     _RandomAccessIterator& __lm1,
@@ -410,7 +410,7 @@ inline _LIBCPP_HIDE_FROM_ABI void __bitset_partition_partial_blocks(
     _ValueType& __pivot,
     uint64_t& __left_bitset,
     uint64_t& __right_bitset) {
-  typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   difference_type __remaining_len = __lm1 - __first + 1;
   difference_type __l_size;
   difference_type __r_size;
@@ -453,7 +453,7 @@ template <class _AlgPolicy, class _RandomAccessIterator>
 inline _LIBCPP_HIDE_FROM_ABI void __swap_bitmap_pos_within(
     _RandomAccessIterator& __first, _RandomAccessIterator& __lm1, uint64_t& __left_bitset, uint64_t& __right_bitset) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   if (__left_bitset) {
     // Swap within the left side.  Need to find set positions in the reverse
     // order.
@@ -494,8 +494,8 @@ template <class _AlgPolicy, class _RandomAccessIterator, class _Compare>
 _LIBCPP_HIDE_FROM_ABI std::pair<_RandomAccessIterator, bool>
 __bitset_partition(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::value_type value_type;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   _LIBCPP_ASSERT_INTERNAL(__last - __first >= difference_type(3), "");
   const _RandomAccessIterator __begin = __first; // used for bounds checking, those are not moved around
   const _RandomAccessIterator __end   = __last;
@@ -586,8 +586,8 @@ template <class _AlgPolicy, class _RandomAccessIterator, class _Compare>
 _LIBCPP_HIDE_FROM_ABI std::pair<_RandomAccessIterator, bool>
 __partition_with_equals_on_right(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::value_type value_type;
   _LIBCPP_ASSERT_INTERNAL(__last - __first >= difference_type(3), "");
   const _RandomAccessIterator __begin = __first; // used for bounds checking, those are not moved around
   const _RandomAccessIterator __end   = __last;
@@ -654,8 +654,8 @@ template <class _AlgPolicy, class _RandomAccessIterator, class _Compare>
 _LIBCPP_HIDE_FROM_ABI _RandomAccessIterator
 __partition_with_equals_on_left(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
-  typedef typename std::iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef std::iterator_traits<_RandomAccessIterator>::value_type value_type;
   const _RandomAccessIterator __begin = __first; // used for bounds checking, those are not moved around
   const _RandomAccessIterator __end   = __last;
   (void)__end; //
@@ -720,7 +720,7 @@ void __introsort(_RandomAccessIterator __first,
                  typename iterator_traits<_RandomAccessIterator>::difference_type __depth,
                  bool __leftmost = true) {
   using _Ops = _IterOps<_AlgPolicy>;
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   using _Comp_ref = __comp_ref_type<_Compare>;
   // Upper bound for using insertion sort for sorting.
   _LIBCPP_CONSTEXPR difference_type __limit = 24;
@@ -863,7 +863,7 @@ __sort_dispatch(_RandomAccessIterator __first, _RandomAccessIterator __last, _Co
   if (__first == __last) // log(0) is undefined, so don't try computing the depth
     return;
 
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   difference_type __depth_limit = 2 * std::__bit_log2(std::__to_unsigned_like(__last - __first));
 
   // Only use bitset partitioning for arithmetic types.  We should also check

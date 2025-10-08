@@ -35,11 +35,11 @@ template <class _Iter>
 class __wrap_iter {
 public:
   typedef _Iter iterator_type;
-  typedef typename iterator_traits<iterator_type>::value_type value_type;
-  typedef typename iterator_traits<iterator_type>::difference_type difference_type;
-  typedef typename iterator_traits<iterator_type>::pointer pointer;
-  typedef typename iterator_traits<iterator_type>::reference reference;
-  typedef typename iterator_traits<iterator_type>::iterator_category iterator_category;
+  typedef iterator_traits<iterator_type>::value_type value_type;
+  typedef iterator_traits<iterator_type>::difference_type difference_type;
+  typedef iterator_traits<iterator_type>::pointer pointer;
+  typedef iterator_traits<iterator_type>::reference reference;
+  typedef iterator_traits<iterator_type>::iterator_category iterator_category;
 #if _LIBCPP_STD_VER >= 20
   typedef contiguous_iterator_tag iterator_concept;
 #endif
@@ -240,8 +240,8 @@ struct __libcpp_is_contiguous_iterator<__wrap_iter<_It> > : true_type {};
 template <class _It>
 struct pointer_traits<__wrap_iter<_It> > {
   typedef __wrap_iter<_It> pointer;
-  typedef typename pointer_traits<_It>::element_type element_type;
-  typedef typename pointer_traits<_It>::difference_type difference_type;
+  typedef pointer_traits<_It>::element_type element_type;
+  typedef pointer_traits<_It>::difference_type difference_type;
 
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR static element_type* to_address(pointer __w) _NOEXCEPT {
     return std::__to_address(__w.base());

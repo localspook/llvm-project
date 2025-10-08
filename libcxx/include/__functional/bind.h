@@ -98,12 +98,11 @@ struct __mu_return2 {};
 
 template <class _Ti, class _Uj>
 struct __mu_return2<true, _Ti, _Uj> {
-  typedef typename tuple_element<is_placeholder<_Ti>::value - 1, _Uj>::type type;
+  typedef tuple_element<is_placeholder<_Ti>::value - 1, _Uj>::type type;
 };
 
 template <class _Ti, class _Uj, __enable_if_t<0 < is_placeholder<_Ti>::value, int> = 0>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20
-typename __mu_return2<0 < is_placeholder<_Ti>::value, _Ti, _Uj>::type
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __mu_return2<0 < is_placeholder<_Ti>::value, _Ti, _Uj>::type
 __mu(_Ti&, _Uj& __uj) {
   const size_t __indx = is_placeholder<_Ti>::value - 1;
   return std::forward<typename tuple_element<__indx, _Uj>::type>(std::get<__indx>(__uj));
@@ -138,12 +137,12 @@ struct __mu_return_impl<_Ti, false, true, false, tuple<_Uj...> >
 
 template <class _Ti, class _TupleUj>
 struct __mu_return_impl<_Ti, false, false, true, _TupleUj> {
-  typedef typename tuple_element<is_placeholder<_Ti>::value - 1, _TupleUj>::type&& type;
+  typedef tuple_element<is_placeholder<_Ti>::value - 1, _TupleUj>::type&& type;
 };
 
 template <class _Ti, class _TupleUj>
 struct __mu_return_impl<_Ti, true, false, false, _TupleUj> {
-  typedef typename _Ti::type& type;
+  typedef _Ti::type& type;
 };
 
 template <class _Ti, class _TupleUj>
@@ -189,7 +188,7 @@ struct __bind_return<_Fp, const tuple<_BoundArgs...>, _TupleUj, true> {
 };
 
 template <class _Fp, class _BoundArgs, size_t... _Indx, class _Args>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename __bind_return<_Fp, _BoundArgs, _Args>::type
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bind_return<_Fp, _BoundArgs, _Args>::type
 __apply_functor(_Fp& __f, _BoundArgs& __bound_args, __index_sequence<_Indx...>, _Args&& __args) {
   return std::__invoke(__f, std::__mu(std::get<_Indx>(__bound_args), __args)...);
 }
@@ -214,7 +213,7 @@ public:
       : __f_(std::forward<_Gp>(__f)), __bound_args_(std::forward<_BA>(__bound_args)...) {}
 
   template <class... _Args>
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename __bind_return<_Fd, _Td, tuple<_Args&&...> >::type
+  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bind_return<_Fd, _Td, tuple<_Args&&...> >::type
   operator()(_Args&&... __args) {
     return std::__apply_functor(
         __f_,
@@ -224,8 +223,7 @@ public:
   }
 
   template <class... _Args>
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20
-  typename __bind_return<const _Fd, const _Td, tuple<_Args&&...> >::type
+  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 __bind_return<const _Fd, const _Td, tuple<_Args&&...> >::type
   operator()(_Args&&... __args) const {
     return std::__apply_functor(
         __f_,
@@ -241,8 +239,8 @@ struct is_bind_expression<__bind<_Fp, _BoundArgs...> > : public true_type {};
 template <class _Rp, class _Fp, class... _BoundArgs>
 class __bind_r : public __bind<_Fp, _BoundArgs...> {
   typedef __bind<_Fp, _BoundArgs...> base;
-  typedef typename base::_Fd _Fd;
-  typedef typename base::_Td _Td;
+  typedef base::_Fd _Fd;
+  typedef base::_Td _Td;
 
 public:
   typedef _Rp result_type;

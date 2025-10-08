@@ -39,7 +39,7 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 // __pointer
 template <class _Tp>
-using __pointer_member _LIBCPP_NODEBUG = typename _Tp::pointer;
+using __pointer_member _LIBCPP_NODEBUG = _Tp::pointer;
 
 template <class _Tp, class _Alloc>
 using __pointer _LIBCPP_NODEBUG = __detected_or_t<_Tp*, __pointer_member, __libcpp_remove_reference_t<_Alloc> >;
@@ -50,7 +50,7 @@ struct __rebind_or_alias_pointer {
 #ifdef _LIBCPP_CXX03_LANG
   using type _LIBCPP_NODEBUG = typename pointer_traits<_Ptr>::template rebind<_Tp>::other;
 #else
-  using type _LIBCPP_NODEBUG = typename pointer_traits<_Ptr>::template rebind<_Tp>;
+  using type _LIBCPP_NODEBUG = pointer_traits<_Ptr>::template rebind<_Tp>;
 #endif
 };
 
@@ -61,32 +61,31 @@ struct __rebind_or_alias_pointer<_Alloc, _Alias, _Ptr, _Tp, __void_t<_Alias<_All
 
 // __const_pointer
 template <class _Alloc>
-using __const_pointer_member _LIBCPP_NODEBUG = typename _Alloc::const_pointer;
+using __const_pointer_member _LIBCPP_NODEBUG = _Alloc::const_pointer;
 
 template <class _Tp, class _Ptr, class _Alloc>
 using __const_pointer_t _LIBCPP_NODEBUG =
-    typename __rebind_or_alias_pointer<_Alloc, __const_pointer_member, _Ptr, const _Tp>::type;
+    __rebind_or_alias_pointer<_Alloc, __const_pointer_member, _Ptr, const _Tp>::type;
 _LIBCPP_SUPPRESS_DEPRECATED_POP
 
 // __void_pointer
 template <class _Alloc>
-using __void_pointer_member _LIBCPP_NODEBUG = typename _Alloc::void_pointer;
+using __void_pointer_member _LIBCPP_NODEBUG = _Alloc::void_pointer;
 
 template <class _Ptr, class _Alloc>
-using __void_pointer_t _LIBCPP_NODEBUG =
-    typename __rebind_or_alias_pointer<_Alloc, __void_pointer_member, _Ptr, void>::type;
+using __void_pointer_t _LIBCPP_NODEBUG = __rebind_or_alias_pointer<_Alloc, __void_pointer_member, _Ptr, void>::type;
 
 // __const_void_pointer
 template <class _Alloc>
-using __const_void_pointer_member _LIBCPP_NODEBUG = typename _Alloc::const_void_pointer;
+using __const_void_pointer_member _LIBCPP_NODEBUG = _Alloc::const_void_pointer;
 
 template <class _Ptr, class _Alloc>
 using __const_void_pointer_t _LIBCPP_NODEBUG =
-    typename __rebind_or_alias_pointer<_Alloc, __const_void_pointer_member, _Ptr, const void>::type;
+    __rebind_or_alias_pointer<_Alloc, __const_void_pointer_member, _Ptr, const void>::type;
 
 // __size_type
 template <class _Tp>
-using __size_type_member _LIBCPP_NODEBUG = typename _Tp::size_type;
+using __size_type_member _LIBCPP_NODEBUG = _Tp::size_type;
 
 template <class _Alloc, class _DiffType>
 using __size_type _LIBCPP_NODEBUG = __detected_or_t<__make_unsigned_t<_DiffType>, __size_type_member, _Alloc>;
@@ -94,18 +93,17 @@ using __size_type _LIBCPP_NODEBUG = __detected_or_t<__make_unsigned_t<_DiffType>
 // __alloc_traits_difference_type
 template <class _Alloc, class _Ptr, class = void>
 struct __alloc_traits_difference_type {
-  using type _LIBCPP_NODEBUG = typename pointer_traits<_Ptr>::difference_type;
+  using type _LIBCPP_NODEBUG = pointer_traits<_Ptr>::difference_type;
 };
 
 template <class _Alloc, class _Ptr>
 struct __alloc_traits_difference_type<_Alloc, _Ptr, __void_t<typename _Alloc::difference_type> > {
-  using type _LIBCPP_NODEBUG = typename _Alloc::difference_type;
+  using type _LIBCPP_NODEBUG = _Alloc::difference_type;
 };
 
 // __propagate_on_container_copy_assignment
 template <class _Tp>
-using __propagate_on_container_copy_assignment_member _LIBCPP_NODEBUG =
-    typename _Tp::propagate_on_container_copy_assignment;
+using __propagate_on_container_copy_assignment_member _LIBCPP_NODEBUG = _Tp::propagate_on_container_copy_assignment;
 
 template <class _Alloc>
 using __propagate_on_container_copy_assignment _LIBCPP_NODEBUG =
@@ -113,8 +111,7 @@ using __propagate_on_container_copy_assignment _LIBCPP_NODEBUG =
 
 // __propagate_on_container_move_assignment
 template <class _Tp>
-using __propagate_on_container_move_assignment_member _LIBCPP_NODEBUG =
-    typename _Tp::propagate_on_container_move_assignment;
+using __propagate_on_container_move_assignment_member _LIBCPP_NODEBUG = _Tp::propagate_on_container_move_assignment;
 
 template <class _Alloc>
 using __propagate_on_container_move_assignment _LIBCPP_NODEBUG =
@@ -122,7 +119,7 @@ using __propagate_on_container_move_assignment _LIBCPP_NODEBUG =
 
 // __propagate_on_container_swap
 template <class _Tp>
-using __propagate_on_container_swap_member _LIBCPP_NODEBUG = typename _Tp::propagate_on_container_swap;
+using __propagate_on_container_swap_member _LIBCPP_NODEBUG = _Tp::propagate_on_container_swap;
 
 template <class _Alloc>
 using __propagate_on_container_swap _LIBCPP_NODEBUG =
@@ -131,7 +128,7 @@ using __propagate_on_container_swap _LIBCPP_NODEBUG =
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 // __is_always_equal
 template <class _Tp>
-using __is_always_equal_member _LIBCPP_NODEBUG = typename _Tp::is_always_equal;
+using __is_always_equal_member _LIBCPP_NODEBUG = _Tp::is_always_equal;
 
 template <class _Alloc>
 using __is_always_equal _LIBCPP_NODEBUG =
@@ -146,11 +143,11 @@ inline const bool __has_rebind_other_v<_Tp, _Up, __void_t<typename _Tp::template
 template <class _Tp, class _Up, bool = __has_rebind_other_v<_Tp, _Up> >
 struct __allocator_traits_rebind {
   static_assert(__has_rebind_other_v<_Tp, _Up>, "This allocator has to implement rebind");
-  using type _LIBCPP_NODEBUG = typename _Tp::template rebind<_Up>::other;
+  using type _LIBCPP_NODEBUG = _Tp::template rebind<_Up>::other;
 };
 template <template <class, class...> class _Alloc, class _Tp, class... _Args, class _Up>
 struct __allocator_traits_rebind<_Alloc<_Tp, _Args...>, _Up, true> {
-  using type _LIBCPP_NODEBUG = typename _Alloc<_Tp, _Args...>::template rebind<_Up>::other;
+  using type _LIBCPP_NODEBUG = _Alloc<_Tp, _Args...>::template rebind<_Up>::other;
 };
 template <template <class, class...> class _Alloc, class _Tp, class... _Args, class _Up>
 struct __allocator_traits_rebind<_Alloc<_Tp, _Args...>, _Up, false> {
@@ -159,7 +156,7 @@ struct __allocator_traits_rebind<_Alloc<_Tp, _Args...>, _Up, false> {
 _LIBCPP_SUPPRESS_DEPRECATED_POP
 
 template <class _Alloc, class _Tp>
-using __allocator_traits_rebind_t _LIBCPP_NODEBUG = typename __allocator_traits_rebind<_Alloc, _Tp>::type;
+using __allocator_traits_rebind_t _LIBCPP_NODEBUG = __allocator_traits_rebind<_Alloc, _Tp>::type;
 
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 
@@ -226,12 +223,12 @@ _LIBCPP_CTAD_SUPPORTED_FOR_TYPE(allocation_result);
 template <class _Alloc>
 struct allocator_traits {
   using allocator_type                         = _Alloc;
-  using value_type                             = typename allocator_type::value_type;
+  using value_type                             = allocator_type::value_type;
   using pointer                                = __pointer<value_type, allocator_type>;
   using const_pointer                          = __const_pointer_t<value_type, pointer, allocator_type>;
   using void_pointer                           = __void_pointer_t<pointer, allocator_type>;
   using const_void_pointer                     = __const_void_pointer_t<pointer, allocator_type>;
-  using difference_type                        = typename __alloc_traits_difference_type<allocator_type, pointer>::type;
+  using difference_type                        = __alloc_traits_difference_type<allocator_type, pointer>::type;
   using size_type                              = __size_type<allocator_type, difference_type>;
   using propagate_on_container_copy_assignment = __propagate_on_container_copy_assignment<allocator_type>;
   using propagate_on_container_move_assignment = __propagate_on_container_move_assignment<allocator_type>;
@@ -338,7 +335,7 @@ struct allocator_traits {
 
 #ifndef _LIBCPP_CXX03_LANG
 template <class _Traits, class _Tp>
-using __rebind_alloc _LIBCPP_NODEBUG = typename _Traits::template rebind_alloc<_Tp>;
+using __rebind_alloc _LIBCPP_NODEBUG = _Traits::template rebind_alloc<_Tp>;
 #else
 template <class _Traits, class _Tp>
 using __rebind_alloc _LIBCPP_NODEBUG = typename _Traits::template rebind_alloc<_Tp>::other;

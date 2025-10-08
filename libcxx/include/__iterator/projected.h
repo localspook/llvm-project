@@ -52,7 +52,7 @@ struct __projected_impl<_It, _Proj> {
 // modes before C++26 to avoid breaking the ABI between standard modes (even though ABI
 // breaks with std::projected are expected to have essentially no impact).
 template <indirectly_readable _It, indirectly_regular_unary_invocable<_It> _Proj>
-using projected = typename __projected_impl<_It, _Proj>::__type;
+using projected = __projected_impl<_It, _Proj>::__type;
 
 #endif // _LIBCPP_STD_VER >= 20
 

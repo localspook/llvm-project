@@ -48,7 +48,7 @@ template <class _Ap, class _Bp, class _Xp = remove_reference_t<_Ap>, class _Yp =
 struct __common_ref;
 
 template <class _Xp, class _Yp>
-using __common_ref_t _LIBCPP_NODEBUG = typename __common_ref<_Xp, _Yp>::__type;
+using __common_ref_t _LIBCPP_NODEBUG = __common_ref<_Xp, _Yp>::__type;
 
 template <class _Xp, class _Yp>
 using __cv_cond_res _LIBCPP_NODEBUG = __cond_res<__copy_cv_t<_Xp, _Yp>&, __copy_cv_t<_Yp, _Xp>&>;
@@ -113,7 +113,7 @@ template <class...>
 struct _LIBCPP_NO_SPECIALIZATIONS common_reference;
 
 template <class... _Types>
-using common_reference_t = typename common_reference<_Types...>::type;
+using common_reference_t = common_reference<_Types...>::type;
 
 template <class, class, template <class> class, template <class> class>
 struct basic_common_reference {};
@@ -159,10 +159,10 @@ struct __common_reference_sub_bullet1<_Tp, _Up> {
 // is well-formed, then the member typedef `type` denotes that type.
 template <class _Tp, class _Up>
 using __basic_common_reference_t _LIBCPP_NODEBUG =
-    typename basic_common_reference<remove_cvref_t<_Tp>,
-                                    remove_cvref_t<_Up>,
-                                    __xref<_Tp>::template __apply,
-                                    __xref<_Up>::template __apply>::type;
+    basic_common_reference<remove_cvref_t<_Tp>,
+                           remove_cvref_t<_Up>,
+                           __xref<_Tp>::template __apply,
+                           __xref<_Up>::template __apply>::type;
 
 template <class _Tp, class _Up>
   requires requires { typename __basic_common_reference_t<_Tp, _Up>; }

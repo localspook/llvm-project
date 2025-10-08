@@ -78,7 +78,7 @@ struct _LIBCPP_DEPRECATED_IN_CXX23 _LIBCPP_NO_SPECIALIZATIONS aligned_storage {
 
 _LIBCPP_SUPPRESS_DEPRECATED_PUSH
 template <size_t _Len, size_t _Align = __find_max_align<__all_types, _Len>::value>
-using aligned_storage_t _LIBCPP_DEPRECATED_IN_CXX23 = typename aligned_storage<_Len, _Align>::type;
+using aligned_storage_t _LIBCPP_DEPRECATED_IN_CXX23 = aligned_storage<_Len, _Align>::type;
 _LIBCPP_SUPPRESS_DEPRECATED_POP
 
 #endif

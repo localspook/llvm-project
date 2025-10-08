@@ -40,7 +40,7 @@ class discard_block_engine {
 
 public:
   // types
-  typedef typename _Engine::result_type result_type;
+  typedef _Engine::result_type result_type;
 
   // engine characteristics
   static inline _LIBCPP_CONSTEXPR const size_t block_size = __p;
@@ -111,7 +111,7 @@ public:
 };
 
 template <class _Engine, size_t __p, size_t __r>
-typename discard_block_engine<_Engine, __p, __r>::result_type discard_block_engine<_Engine, __p, __r>::operator()() {
+discard_block_engine<_Engine, __p, __r>::result_type discard_block_engine<_Engine, __p, __r>::operator()() {
   if (__n_ >= static_cast<int>(__r)) {
     __e_.discard(__p - __r);
     __n_ = 0;

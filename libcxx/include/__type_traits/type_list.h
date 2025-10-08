@@ -39,7 +39,7 @@ struct __find_first<__type_list<_Head, _Tail...>, _Size, true> {
 
 template <class _Head, class... _Tail, size_t _Size>
 struct __find_first<__type_list<_Head, _Tail...>, _Size, false> {
-  using type _LIBCPP_NODEBUG = typename __find_first<__type_list<_Tail...>, _Size>::type;
+  using type _LIBCPP_NODEBUG = __find_first<__type_list<_Tail...>, _Size>::type;
 };
 
 _LIBCPP_END_NAMESPACE_STD

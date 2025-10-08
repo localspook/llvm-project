@@ -161,8 +161,7 @@ struct __fn : __range_adaptor_closure<__fn> {
     return std::forward<_Range>(__range).base();
   }
 
-  template <class _Range,
-            class _UnwrappedSubrange = typename __unwrapped_reverse_subrange<remove_cvref_t<_Range>>::type>
+  template <class _Range, class _UnwrappedSubrange = __unwrapped_reverse_subrange<remove_cvref_t<_Range>>::type>
     requires __is_sized_reverse_subrange<remove_cvref_t<_Range>>
   [[nodiscard]] _LIBCPP_HIDE_FROM_ABI constexpr auto operator()(_Range&& __range) const
       noexcept(noexcept(_UnwrappedSubrange(__range.end().base(), __range.begin().base(), __range.size())))
@@ -170,8 +169,7 @@ struct __fn : __range_adaptor_closure<__fn> {
     return _UnwrappedSubrange(__range.end().base(), __range.begin().base(), __range.size());
   }
 
-  template <class _Range,
-            class _UnwrappedSubrange = typename __unwrapped_reverse_subrange<remove_cvref_t<_Range>>::type>
+  template <class _Range, class _UnwrappedSubrange = __unwrapped_reverse_subrange<remove_cvref_t<_Range>>::type>
     requires __is_unsized_reverse_subrange<remove_cvref_t<_Range>>
   [[nodiscard]] _LIBCPP_HIDE_FROM_ABI constexpr auto operator()(_Range&& __range) const
       noexcept(noexcept(_UnwrappedSubrange(__range.end().base(), __range.begin().base())))

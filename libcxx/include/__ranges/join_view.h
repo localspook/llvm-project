@@ -55,8 +55,8 @@ struct __join_view_iterator_category {};
 template <class _View>
   requires is_reference_v<range_reference_t<_View>> && forward_range<_View> && forward_range<range_reference_t<_View>>
 struct __join_view_iterator_category<_View> {
-  using _OuterC _LIBCPP_NODEBUG = typename iterator_traits<iterator_t<_View>>::iterator_category;
-  using _InnerC _LIBCPP_NODEBUG = typename iterator_traits<iterator_t<range_reference_t<_View>>>::iterator_category;
+  using _OuterC _LIBCPP_NODEBUG = iterator_traits<iterator_t<_View>>::iterator_category;
+  using _InnerC _LIBCPP_NODEBUG = iterator_traits<iterator_t<range_reference_t<_View>>>::iterator_category;
 
   using iterator_category =
       _If< derived_from<_OuterC, bidirectional_iterator_tag> && derived_from<_InnerC, bidirectional_iterator_tag> &&
@@ -380,7 +380,7 @@ template <class _JoinViewIterator>
 struct __segmented_iterator_traits<_JoinViewIterator> {
   using __segment_iterator _LIBCPP_NODEBUG =
       __iterator_with_data<typename _JoinViewIterator::_Outer, typename _JoinViewIterator::_Parent*>;
-  using __local_iterator _LIBCPP_NODEBUG = typename _JoinViewIterator::_Inner;
+  using __local_iterator _LIBCPP_NODEBUG = _JoinViewIterator::_Inner;
 
   // TODO: Would it make sense to enable the optimization for other iterator types?
 

@@ -42,8 +42,8 @@ template <class _Cp, bool _IsConst>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI __bit_iterator<_Cp, false> __copy_aligned(
     __bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, __bit_iterator<_Cp, false> __result) {
   using _In             = __bit_iterator<_Cp, _IsConst>;
-  using difference_type = typename _In::difference_type;
-  using __storage_type  = typename _In::__storage_type;
+  using difference_type = _In::difference_type;
+  using __storage_type  = _In::__storage_type;
 
   const int __bits_per_word = _In::__bits_per_word;
   difference_type __n       = __last - __first;
@@ -87,8 +87,8 @@ template <class _Cp, bool _IsConst>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI __bit_iterator<_Cp, false> __copy_unaligned(
     __bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, __bit_iterator<_Cp, false> __result) {
   using _In             = __bit_iterator<_Cp, _IsConst>;
-  using difference_type = typename _In::difference_type;
-  using __storage_type  = typename _In::__storage_type;
+  using difference_type = _In::difference_type;
+  using __storage_type  = _In::__storage_type;
 
   const int __bits_per_word = _In::__bits_per_word;
   difference_type __n       = __last - __first;
@@ -177,7 +177,7 @@ struct __copy_impl {
         : __result_(__result) {}
 
     _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 void
-    operator()(typename _Traits::__local_iterator __lfirst, typename _Traits::__local_iterator __llast) {
+    operator()(_Traits::__local_iterator __lfirst, _Traits::__local_iterator __llast) {
       __result_ = std::__copy(__lfirst, __llast, std::move(__result_)).second;
     }
   };
@@ -197,7 +197,7 @@ struct __copy_impl {
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 pair<_InIter, _OutIter>
   operator()(_InIter __first, _InIter __last, _OutIter __result) const {
     using _Traits = __segmented_iterator_traits<_OutIter>;
-    using _DiffT  = typename common_type<__iter_diff_t<_InIter>, __iter_diff_t<_OutIter> >::type;
+    using _DiffT  = common_type<__iter_diff_t<_InIter>, __iter_diff_t<_OutIter> >::type;
 
     if (__first == __last)
       return std::make_pair(std::move(__first), std::move(__result));

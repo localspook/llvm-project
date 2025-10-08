@@ -249,7 +249,7 @@ _LIBCPP_HIDE_FROM_ABI constexpr bool __is_surrogate_pair_low(wchar_t __value) {
 /// - 4 UTF-32 (for example Linux)
 template <>
 class __code_point_view<wchar_t> {
-  using _Iterator _LIBCPP_NODEBUG = typename basic_string_view<wchar_t>::const_iterator;
+  using _Iterator _LIBCPP_NODEBUG = basic_string_view<wchar_t>::const_iterator;
 
 public:
   static_assert(sizeof(wchar_t) == 2 || sizeof(wchar_t) == 4, "sizeof(wchar_t) has a not implemented value");
@@ -527,7 +527,7 @@ private:
 /// Therefore only this code point is extracted.
 template <class _CharT>
 class __extended_grapheme_cluster_view {
-  using _Iterator _LIBCPP_NODEBUG = typename basic_string_view<_CharT>::const_iterator;
+  using _Iterator _LIBCPP_NODEBUG = basic_string_view<_CharT>::const_iterator;
 
 public:
   _LIBCPP_HIDE_FROM_ABI constexpr explicit __extended_grapheme_cluster_view(_Iterator __first, _Iterator __last)

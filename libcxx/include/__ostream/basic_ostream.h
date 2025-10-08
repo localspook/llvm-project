@@ -48,9 +48,9 @@ public:
   // types (inherited from basic_ios (27.5.4)):
   typedef _CharT char_type;
   typedef _Traits traits_type;
-  typedef typename traits_type::int_type int_type;
-  typedef typename traits_type::pos_type pos_type;
-  typedef typename traits_type::off_type off_type;
+  typedef traits_type::int_type int_type;
+  typedef traits_type::pos_type pos_type;
+  typedef traits_type::off_type off_type;
 
   // 27.7.2.2 Constructor/destructor:
   inline _LIBCPP_HIDE_FROM_ABI_AFTER_V1 explicit basic_ostream(basic_streambuf<char_type, traits_type>* __sb) {
@@ -512,7 +512,7 @@ basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::flush() {
 }
 
 template <class _CharT, class _Traits>
-typename basic_ostream<_CharT, _Traits>::pos_type basic_ostream<_CharT, _Traits>::tellp() {
+basic_ostream<_CharT, _Traits>::pos_type basic_ostream<_CharT, _Traits>::tellp() {
   if (this->fail())
     return pos_type(-1);
   return this->rdbuf()->pubseekoff(0, ios_base::cur, ios_base::out);

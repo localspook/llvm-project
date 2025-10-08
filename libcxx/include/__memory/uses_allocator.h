@@ -26,7 +26,7 @@ private:
   template <class _Up>
   static false_type __test(...);
   template <class _Up>
-  static true_type __test(typename _Up::allocator_type* = 0);
+  static true_type __test(_Up::allocator_type* = 0);
 
 public:
   static const bool value = decltype(__test<_Tp>(0))::value;

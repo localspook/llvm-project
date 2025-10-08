@@ -31,11 +31,11 @@ struct enable_if<true, _Tp> {
 _LIBCPP_DIAGNOSTIC_POP
 
 template <bool _Bp, class _Tp = void>
-using __enable_if_t _LIBCPP_NODEBUG = typename enable_if<_Bp, _Tp>::type;
+using __enable_if_t _LIBCPP_NODEBUG = enable_if<_Bp, _Tp>::type;
 
 #if _LIBCPP_STD_VER >= 14
 template <bool _Bp, class _Tp = void>
-using enable_if_t = typename enable_if<_Bp, _Tp>::type;
+using enable_if_t = enable_if<_Bp, _Tp>::type;
 #endif
 
 _LIBCPP_END_NAMESPACE_STD

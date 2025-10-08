@@ -244,7 +244,7 @@ struct __passthrough_type<subrange<_Iter, _Sent, _Kind>> {
 };
 
 template <class _Tp>
-using __passthrough_type_t _LIBCPP_NODEBUG = typename __passthrough_type<_Tp>::type;
+using __passthrough_type_t _LIBCPP_NODEBUG = __passthrough_type<_Tp>::type;
 
 struct __fn {
   // [range.take.overview]: the `empty_view` case.

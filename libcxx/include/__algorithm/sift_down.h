@@ -32,8 +32,8 @@ __sift_down(_RandomAccessIterator __first,
             __iter_diff_t<_RandomAccessIterator> __start) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
-  typedef typename iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::value_type value_type;
   // left-child of __start is at 2 * __start + 1
   // right-child of __start is at 2 * __start + 2
   difference_type __child = __start;
@@ -85,7 +85,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 _RandomAccessIterator __floy
     _RandomAccessIterator __first,
     _Compare&& __comp,
     typename iterator_traits<_RandomAccessIterator>::difference_type __len) {
-  using difference_type = typename iterator_traits<_RandomAccessIterator>::difference_type;
+  using difference_type = iterator_traits<_RandomAccessIterator>::difference_type;
   _LIBCPP_ASSERT_INTERNAL(__len >= 2, "shouldn't be called unless __len >= 2");
 
   _RandomAccessIterator __hole    = __first;

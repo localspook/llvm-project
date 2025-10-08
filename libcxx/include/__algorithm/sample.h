@@ -91,9 +91,9 @@ _LIBCPP_HIDE_FROM_ABI _SampleIterator __sample(
     _UniformRandomNumberGenerator& __g) {
   _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(__n >= 0, "N must be a positive number.");
 
-  using _PopIterCategory = typename _IterOps<_AlgPolicy>::template __iterator_category<_PopulationIterator>;
-  using _Difference      = typename _IterOps<_AlgPolicy>::template __difference_type<_PopulationIterator>;
-  using _CommonType      = typename common_type<_Distance, _Difference>::type;
+  using _PopIterCategory = _IterOps<_AlgPolicy>::template __iterator_category<_PopulationIterator>;
+  using _Difference      = _IterOps<_AlgPolicy>::template __difference_type<_PopulationIterator>;
+  using _CommonType      = common_type<_Distance, _Difference>::type;
 
   return std::__sample<_AlgPolicy>(
       std::move(__first), std::move(__last), std::move(__output_iter), _CommonType(__n), __g, _PopIterCategory());

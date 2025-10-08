@@ -100,7 +100,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void __buffered_inplace_merg
     typename iterator_traits<_BidirectionalIterator>::difference_type __len1,
     typename iterator_traits<_BidirectionalIterator>::difference_type __len2,
     typename iterator_traits<_BidirectionalIterator>::value_type* __buff) {
-  typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
+  typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
   __destruct_n __d(0);
   unique_ptr<value_type, __destruct_n&> __h2(__buff, __d);
   if (__len1 <= __len2) {
@@ -134,7 +134,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 void __inplace_merge(
     ptrdiff_t __buff_size) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_BidirectionalIterator>::difference_type difference_type;
+  typedef iterator_traits<_BidirectionalIterator>::difference_type difference_type;
   while (true) {
     // if __middle == __last, we're done
     if (__len2 == 0)
@@ -206,8 +206,8 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 void __inplace_merge(
 template <class _AlgPolicy, class _BidirectionalIterator, class _Compare>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void __inplace_merge(
     _BidirectionalIterator __first, _BidirectionalIterator __middle, _BidirectionalIterator __last, _Compare&& __comp) {
-  typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
-  typedef typename iterator_traits<_BidirectionalIterator>::difference_type difference_type;
+  typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
+  typedef iterator_traits<_BidirectionalIterator>::difference_type difference_type;
   difference_type __len1                             = _IterOps<_AlgPolicy>::distance(__first, __middle);
   difference_type __len2                             = _IterOps<_AlgPolicy>::distance(__middle, __last);
   difference_type __buf_size                         = std::min(__len1, __len2);

@@ -81,8 +81,8 @@ public:
   using value_type                     = bool;
   using allocator_type                 = _Allocator;
   using __alloc_traits _LIBCPP_NODEBUG = allocator_traits<allocator_type>;
-  using size_type                      = typename __alloc_traits::size_type;
-  using difference_type                = typename __alloc_traits::difference_type;
+  using size_type                      = __alloc_traits::size_type;
+  using difference_type                = __alloc_traits::difference_type;
   using __storage_type _LIBCPP_NODEBUG = size_type;
   using pointer                        = __bit_iterator<vector, false>;
   using const_pointer                  = __bit_iterator<vector, true>;
@@ -94,8 +94,8 @@ public:
 private:
   using __storage_allocator _LIBCPP_NODEBUG     = __rebind_alloc<__alloc_traits, __storage_type>;
   using __storage_traits _LIBCPP_NODEBUG        = allocator_traits<__storage_allocator>;
-  using __storage_pointer _LIBCPP_NODEBUG       = typename __storage_traits::pointer;
-  using __const_storage_pointer _LIBCPP_NODEBUG = typename __storage_traits::const_pointer;
+  using __storage_pointer _LIBCPP_NODEBUG       = __storage_traits::pointer;
+  using __const_storage_pointer _LIBCPP_NODEBUG = __storage_traits::const_pointer;
 
   __storage_pointer __begin_;
   size_type __size_;
@@ -546,8 +546,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 void vector<bool, _Allocator>::__vdeallocate() _NO
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::size_type
-vector<bool, _Allocator>::max_size() const _NOEXCEPT {
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::size_type vector<bool, _Allocator>::max_size() const _NOEXCEPT {
   size_type __amax = __storage_traits::max_size(__alloc_);
   size_type __nmax = numeric_limits<difference_type>::max();
   return __nmax / __bits_per_word <= __amax ? __nmax : __internal_cap_to_external(__amax);
@@ -555,7 +554,7 @@ vector<bool, _Allocator>::max_size() const _NOEXCEPT {
 
 //  Precondition:  __new_size > capacity()
 template <class _Allocator>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::size_type
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::size_type
 vector<bool, _Allocator>::__recommend(size_type __new_size) const {
   const size_type __ms = max_size();
   if (__new_size > __ms)
@@ -875,14 +874,14 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 void vector<bool, _Allocator>::shrink_to_fit() _NO
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::reference vector<bool, _Allocator>::at(size_type __n) {
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::reference vector<bool, _Allocator>::at(size_type __n) {
   if (__n >= size())
     this->__throw_out_of_range();
   return (*this)[__n];
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::const_reference
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::const_reference
 vector<bool, _Allocator>::at(size_type __n) const {
   if (__n >= size())
     this->__throw_out_of_range();
@@ -898,7 +897,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 void vector<bool, _Allocator>::push_back(const val
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::insert(const_iterator __position, const value_type& __x) {
   iterator __r;
   if (size() < capacity()) {
@@ -919,7 +918,7 @@ vector<bool, _Allocator>::insert(const_iterator __position, const value_type& __
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::insert(const_iterator __position, size_type __n, const value_type& __x) {
   iterator __r;
   size_type __c = capacity();
@@ -942,14 +941,14 @@ vector<bool, _Allocator>::insert(const_iterator __position, size_type __n, const
 
 template <class _Allocator>
 template <class _InputIterator, __enable_if_t<__has_exactly_input_iterator_category<_InputIterator>::value, int> >
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::insert(const_iterator __position, _InputIterator __first, _InputIterator __last) {
   return __insert_with_sentinel(__position, __first, __last);
 }
 
 template <class _Allocator>
 template <class _InputIterator, class _Sentinel>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::__insert_with_sentinel(const_iterator __position, _InputIterator __first, _Sentinel __last) {
   difference_type __off = __position - begin();
   iterator __p          = __const_iterator_cast(__position);
@@ -983,14 +982,14 @@ vector<bool, _Allocator>::__insert_with_sentinel(const_iterator __position, _Inp
 
 template <class _Allocator>
 template <class _ForwardIterator, __enable_if_t<__has_forward_iterator_category<_ForwardIterator>::value, int> >
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::insert(const_iterator __position, _ForwardIterator __first, _ForwardIterator __last) {
   return __insert_with_size(__position, __first, __last, std::distance(__first, __last));
 }
 
 template <class _Allocator>
 template <class _Iterator, class _Sentinel>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::__insert_with_size(
     const_iterator __position, _Iterator __first, _Sentinel __last, difference_type __n_signed) {
   _LIBCPP_ASSERT_VALID_INPUT_RANGE(__n_signed >= 0, "invalid range specified");
@@ -1015,7 +1014,7 @@ vector<bool, _Allocator>::__insert_with_size(
 }
 
 template <class _Allocator>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::erase(const_iterator __position) {
   _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(
       __position != end(), "vector<bool>::erase(iterator) called with a non-dereferenceable iterator");
@@ -1026,7 +1025,7 @@ vector<bool, _Allocator>::erase(const_iterator __position) {
 }
 
 template <class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<bool, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<bool, _Allocator>::iterator
 vector<bool, _Allocator>::erase(const_iterator __first, const_iterator __last) {
   _LIBCPP_ASSERT_VALID_INPUT_RANGE(
       __first <= __last, "vector<bool>::erase(iterator, iterator) called with an invalid range");

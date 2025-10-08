@@ -420,7 +420,7 @@ _InputIterator time_get<_CharT, _InputIterator>::get(
 }
 
 template <class _CharT, class _InputIterator>
-typename time_get<_CharT, _InputIterator>::dateorder time_get<_CharT, _InputIterator>::do_date_order() const {
+time_get<_CharT, _InputIterator>::dateorder time_get<_CharT, _InputIterator>::do_date_order() const {
   return mdy;
 }
 

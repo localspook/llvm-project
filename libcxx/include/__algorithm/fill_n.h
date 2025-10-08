@@ -34,7 +34,7 @@ template <bool _FillVal, class _Cp>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI void
 __fill_n_bool(__bit_iterator<_Cp, false> __first, typename __size_difference_type_traits<_Cp>::size_type __n) {
   using _It            = __bit_iterator<_Cp, false>;
-  using __storage_type = typename _It::__storage_type;
+  using __storage_type = _It::__storage_type;
 
   const int __bits_per_word = _It::__bits_per_word;
   // do first partial word

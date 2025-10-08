@@ -50,7 +50,7 @@ __nth_element(
   using _Ops = _IterOps<_AlgPolicy>;
 
   // _Compare is known to be a reference type
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   const difference_type __limit = 7;
   while (true) {
     if (__nth == __last)

@@ -33,7 +33,7 @@ __sift_up(_RandomAccessIterator __first,
           _RandomAccessIterator __last,
           _Compare&& __comp,
           typename iterator_traits<_RandomAccessIterator>::difference_type __len) {
-  using value_type = typename iterator_traits<_RandomAccessIterator>::value_type;
+  using value_type = iterator_traits<_RandomAccessIterator>::value_type;
 
   if (__len > 1) {
     __len                       = (__len - 2) / 2;

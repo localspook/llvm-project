@@ -35,8 +35,8 @@ class _LIBCPP_DEPRECATED_IN_CXX17 wstring_convert {
 public:
   typedef basic_string<char, char_traits<char>, _ByteAlloc> byte_string;
   typedef basic_string<_Elem, char_traits<_Elem>, _WideAlloc> wide_string;
-  typedef typename _Codecvt::state_type state_type;
-  typedef typename wide_string::traits_type::int_type int_type;
+  typedef _Codecvt::state_type state_type;
+  typedef wide_string::traits_type::int_type int_type;
 
 private:
   byte_string __byte_err_string_;
@@ -126,7 +126,7 @@ wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::~wstring_convert() {
 }
 
 template <class _Codecvt, class _Elem, class _WideAlloc, class _ByteAlloc>
-typename wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::wide_string
+wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::wide_string
 wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::from_bytes(const char* __frm, const char* __frm_end) {
   _LIBCPP_SUPPRESS_DEPRECATED_POP
   __cvtcount_ = 0;
@@ -175,7 +175,7 @@ wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::from_bytes(const char*
 }
 
 template <class _Codecvt, class _Elem, class _WideAlloc, class _ByteAlloc>
-typename wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::byte_string
+wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::byte_string
 wstring_convert<_Codecvt, _Elem, _WideAlloc, _ByteAlloc>::to_bytes(const _Elem* __frm, const _Elem* __frm_end) {
   __cvtcount_ = 0;
   if (__cvtptr_ != nullptr) {

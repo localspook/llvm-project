@@ -24,7 +24,7 @@ struct _LIBCPP_NO_SPECIALIZATIONS add_const {
 
 #if _LIBCPP_STD_VER >= 14
 template <class _Tp>
-using add_const_t = typename add_const<_Tp>::type;
+using add_const_t = add_const<_Tp>::type;
 #endif
 
 template <class _Tp>
@@ -34,7 +34,7 @@ struct _LIBCPP_NO_SPECIALIZATIONS add_cv {
 
 #if _LIBCPP_STD_VER >= 14
 template <class _Tp>
-using add_cv_t = typename add_cv<_Tp>::type;
+using add_cv_t = add_cv<_Tp>::type;
 #endif
 
 template <class _Tp>
@@ -44,7 +44,7 @@ struct _LIBCPP_NO_SPECIALIZATIONS add_volatile {
 
 #if _LIBCPP_STD_VER >= 14
 template <class _Tp>
-using add_volatile_t = typename add_volatile<_Tp>::type;
+using add_volatile_t = add_volatile<_Tp>::type;
 #endif
 
 _LIBCPP_END_NAMESPACE_STD

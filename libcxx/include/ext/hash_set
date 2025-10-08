@@ -236,13 +236,13 @@ private:
   __table __table_;
 
 public:
-  typedef typename __table::pointer pointer;
-  typedef typename __table::const_pointer const_pointer;
-  typedef typename __table::size_type size_type;
-  typedef typename __table::difference_type difference_type;
+  typedef __table::pointer pointer;
+  typedef __table::const_pointer const_pointer;
+  typedef __table::size_type size_type;
+  typedef __table::difference_type difference_type;
 
-  typedef typename __table::const_iterator iterator;
-  typedef typename __table::const_iterator const_iterator;
+  typedef __table::const_iterator iterator;
+  typedef __table::const_iterator const_iterator;
 
   _LIBCPP_HIDE_FROM_ABI hash_set() {}
   _LIBCPP_HIDE_FROM_ABI explicit hash_set(
@@ -379,7 +379,7 @@ _LIBCPP_HIDE_FROM_ABI bool
 operator==(const hash_set<_Value, _Hash, _Pred, _Alloc>& __x, const hash_set<_Value, _Hash, _Pred, _Alloc>& __y) {
   if (__x.size() != __y.size())
     return false;
-  typedef typename hash_set<_Value, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
+  typedef hash_set<_Value, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
   for (const_iterator __i = __x.begin(), __ex = __x.end(), __ey = __y.end(); __i != __ex; ++__i) {
     const_iterator __j = __y.find(*__i);
     if (__j == __ey || !(*__i == *__j))
@@ -415,13 +415,13 @@ private:
   __table __table_;
 
 public:
-  typedef typename __table::pointer pointer;
-  typedef typename __table::const_pointer const_pointer;
-  typedef typename __table::size_type size_type;
-  typedef typename __table::difference_type difference_type;
+  typedef __table::pointer pointer;
+  typedef __table::const_pointer const_pointer;
+  typedef __table::size_type size_type;
+  typedef __table::difference_type difference_type;
 
-  typedef typename __table::const_iterator iterator;
-  typedef typename __table::const_iterator const_iterator;
+  typedef __table::const_iterator iterator;
+  typedef __table::const_iterator const_iterator;
 
   _LIBCPP_HIDE_FROM_ABI hash_multiset() {}
   explicit _LIBCPP_HIDE_FROM_ABI
@@ -554,7 +554,7 @@ _LIBCPP_HIDE_FROM_ABI bool operator==(const hash_multiset<_Value, _Hash, _Pred, 
                                       const hash_multiset<_Value, _Hash, _Pred, _Alloc>& __y) {
   if (__x.size() != __y.size())
     return false;
-  typedef typename hash_multiset<_Value, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
+  typedef hash_multiset<_Value, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
   typedef std::pair<const_iterator, const_iterator> _EqRng;
   for (const_iterator __i = __x.begin(), __ex = __x.end(); __i != __ex;) {
     _EqRng __xeq = __x.equal_range(*__i);

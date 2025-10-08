@@ -34,7 +34,7 @@ struct __aliasing_iterator_wrapper {
     _BaseIter __base_ = nullptr;
 
     using __iter_traits _LIBCPP_NODEBUG     = iterator_traits<_BaseIter>;
-    using __base_value_type _LIBCPP_NODEBUG = typename __iter_traits::value_type;
+    using __base_value_type _LIBCPP_NODEBUG = __iter_traits::value_type;
 
     static_assert(__has_random_access_iterator_category<_BaseIter>::value,
                   "The base iterator has to be a random access iterator!");
@@ -123,7 +123,7 @@ struct __aliasing_iterator_wrapper {
 
 // This is required to avoid ADL instantiations on _BaseT
 template <class _BaseT, class _Alias>
-using __aliasing_iterator _LIBCPP_NODEBUG = typename __aliasing_iterator_wrapper<_BaseT, _Alias>::__iterator;
+using __aliasing_iterator _LIBCPP_NODEBUG = __aliasing_iterator_wrapper<_BaseT, _Alias>::__iterator;
 
 _LIBCPP_END_NAMESPACE_STD
 

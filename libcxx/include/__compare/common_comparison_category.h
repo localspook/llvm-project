@@ -77,7 +77,7 @@ struct common_comparison_category {
 };
 
 template <class... _Ts>
-using common_comparison_category_t = typename common_comparison_category<_Ts...>::type;
+using common_comparison_category_t = common_comparison_category<_Ts...>::type;
 
 #endif // _LIBCPP_STD_VER >= 20
 

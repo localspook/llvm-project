@@ -73,7 +73,7 @@ template <class _CharT>
 locale::id messages<_CharT>::id;
 
 template <class _CharT>
-typename messages<_CharT>::catalog messages<_CharT>::do_open(const basic_string<char>& __nm, const locale&) const {
+messages<_CharT>::catalog messages<_CharT>::do_open(const basic_string<char>& __nm, const locale&) const {
 #  if _LIBCPP_HAS_CATOPEN
   return (catalog)catopen(__nm.c_str(), NL_CAT_LOCALE);
 #  else  // !_LIBCPP_HAS_CATOPEN
@@ -83,7 +83,7 @@ typename messages<_CharT>::catalog messages<_CharT>::do_open(const basic_string<
 }
 
 template <class _CharT>
-typename messages<_CharT>::string_type
+messages<_CharT>::string_type
 messages<_CharT>::do_get(catalog __c, int __set, int __msgid, const string_type& __dflt) const {
 #  if _LIBCPP_HAS_CATOPEN
   string __ndflt;

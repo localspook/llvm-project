@@ -88,8 +88,8 @@ template <class _RandomAccessIterator1,
           class _BinaryPredicate = equal_to<>>
 class boyer_moore_searcher {
 private:
-  using difference_type = typename std::iterator_traits<_RandomAccessIterator1>::difference_type;
-  using value_type      = typename std::iterator_traits<_RandomAccessIterator1>::value_type;
+  using difference_type = std::iterator_traits<_RandomAccessIterator1>::difference_type;
+  using value_type      = std::iterator_traits<_RandomAccessIterator1>::value_type;
   using __skip_table_type _LIBCPP_NODEBUG =
       _BMSkipTable<value_type,
                    difference_type,
@@ -219,8 +219,8 @@ template <class _RandomAccessIterator1,
           class _BinaryPredicate = equal_to<>>
 class boyer_moore_horspool_searcher {
 private:
-  using difference_type = typename iterator_traits<_RandomAccessIterator1>::difference_type;
-  using value_type      = typename iterator_traits<_RandomAccessIterator1>::value_type;
+  using difference_type = iterator_traits<_RandomAccessIterator1>::difference_type;
+  using value_type      = iterator_traits<_RandomAccessIterator1>::value_type;
   using __skip_table_type _LIBCPP_NODEBUG =
       _BMSkipTable<value_type,
                    difference_type,

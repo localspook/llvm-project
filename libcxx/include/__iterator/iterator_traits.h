@@ -112,7 +112,7 @@ concept __cpp17_bidirectional_iterator = __cpp17_forward_iterator<_Ip> && requir
 template <class _Ip>
 concept __cpp17_random_access_iterator =
     __cpp17_bidirectional_iterator<_Ip> && totally_ordered<_Ip> &&
-    requires(_Ip __i, typename incrementable_traits<_Ip>::difference_type __n) {
+    requires(_Ip __i, incrementable_traits<_Ip>::difference_type __n) {
       { __i += __n } -> same_as<_Ip&>;
       { __i -= __n } -> same_as<_Ip&>;
       { __i + __n } -> same_as<_Ip>;
@@ -157,7 +157,7 @@ struct __iterator_traits_member_pointer_or_arrow_or_void {
 // If the qualified-id `I::pointer` is valid and denotes a type, `pointer` names that type.
 template <__has_member_pointer _Ip>
 struct __iterator_traits_member_pointer_or_arrow_or_void<_Ip> {
-  using type _LIBCPP_NODEBUG = typename _Ip::pointer;
+  using type _LIBCPP_NODEBUG = _Ip::pointer;
 };
 
 // Otherwise, if `decltype(declval<I&>().operator->())` is well-formed, then `pointer` names that
@@ -178,7 +178,7 @@ struct __iterator_traits_member_reference {
 // If the qualified-id `I::reference` is valid and denotes a type, `reference` names that type.
 template <__has_member_reference _Ip>
 struct __iterator_traits_member_reference<_Ip> {
-  using type _LIBCPP_NODEBUG = typename _Ip::reference;
+  using type _LIBCPP_NODEBUG = _Ip::reference;
 };
 
 // [iterator.traits]/3.2.3.4
@@ -217,7 +217,7 @@ struct __iterator_traits_iterator_category : __deduce_iterator_category<_Ip> {};
 // that type.
 template <__has_member_iterator_category _Ip>
 struct __iterator_traits_iterator_category<_Ip> {
-  using type _LIBCPP_NODEBUG = typename _Ip::iterator_category;
+  using type _LIBCPP_NODEBUG = _Ip::iterator_category;
 };
 
 // otherwise, it names void.
@@ -231,7 +231,7 @@ struct __iterator_traits_difference_type {
 template <class _Ip>
   requires requires { typename incrementable_traits<_Ip>::difference_type; }
 struct __iterator_traits_difference_type<_Ip> {
-  using type _LIBCPP_NODEBUG = typename incrementable_traits<_Ip>::difference_type;
+  using type _LIBCPP_NODEBUG = incrementable_traits<_Ip>::difference_type;
 };
 
 // [iterator.traits]/3.4
@@ -240,18 +240,18 @@ template <class>
 struct __iterator_traits {};
 
 template <class _Tp>
-using __pointer_member _LIBCPP_NODEBUG = typename _Tp::pointer;
+using __pointer_member _LIBCPP_NODEBUG = _Tp::pointer;
 
 // [iterator.traits]/3.1
 // If `I` has valid ([temp.deduct]) member types `difference-type`, `value-type`, `reference`, and
 // `iterator-category`, then `iterator-traits<I>` has the following publicly accessible members:
 template <__specifies_members _Ip>
 struct __iterator_traits<_Ip> {
-  using iterator_category = typename _Ip::iterator_category;
-  using value_type        = typename _Ip::value_type;
-  using difference_type   = typename _Ip::difference_type;
+  using iterator_category = _Ip::iterator_category;
+  using value_type        = _Ip::value_type;
+  using difference_type   = _Ip::difference_type;
   using pointer           = __detected_or_t<void, __pointer_member, _Ip>;
-  using reference         = typename _Ip::reference;
+  using reference         = _Ip::reference;
 };
 
 // [iterator.traits]/3.2
@@ -259,11 +259,11 @@ struct __iterator_traits<_Ip> {
 // `iterator-traits<I>` has the following publicly accessible members:
 template <__cpp17_input_iterator_missing_members _Ip>
 struct __iterator_traits<_Ip> {
-  using iterator_category = typename __iterator_traits_iterator_category<_Ip>::type;
-  using value_type        = typename indirectly_readable_traits<_Ip>::value_type;
-  using difference_type   = typename incrementable_traits<_Ip>::difference_type;
-  using pointer           = typename __iterator_traits_member_pointer_or_arrow_or_void<_Ip>::type;
-  using reference         = typename __iterator_traits_member_reference<_Ip>::type;
+  using iterator_category = __iterator_traits_iterator_category<_Ip>::type;
+  using value_type        = indirectly_readable_traits<_Ip>::value_type;
+  using difference_type   = incrementable_traits<_Ip>::difference_type;
+  using pointer           = __iterator_traits_member_pointer_or_arrow_or_void<_Ip>::type;
+  using reference         = __iterator_traits_member_reference<_Ip>::type;
 };
 
 // Otherwise, if `I` satisfies the exposition-only concept `cpp17-iterator`, then
@@ -272,7 +272,7 @@ template <__cpp17_iterator_missing_members _Ip>
 struct __iterator_traits<_Ip> {
   using iterator_category = output_iterator_tag;
   using value_type        = void;
-  using difference_type   = typename __iterator_traits_difference_type<_Ip>::type;
+  using difference_type   = __iterator_traits_difference_type<_Ip>::type;
   using pointer           = void;
   using reference         = void;
 };
@@ -349,10 +349,10 @@ struct iterator_traits<_Tp*> {
 };
 
 template <class _Tp>
-using __iterator_category _LIBCPP_NODEBUG = typename _Tp::iterator_category;
+using __iterator_category _LIBCPP_NODEBUG = _Tp::iterator_category;
 
 template <class _Tp>
-using __iterator_concept _LIBCPP_NODEBUG = typename _Tp::iterator_concept;
+using __iterator_concept _LIBCPP_NODEBUG = _Tp::iterator_concept;
 
 template <class _Tp, class _Up>
 using __has_iterator_category_convertible_to _LIBCPP_NODEBUG =
@@ -420,7 +420,7 @@ using __has_exactly_bidirectional_iterator_category _LIBCPP_NODEBUG =
                           !__has_iterator_category_convertible_to<_Tp, random_access_iterator_tag>::value>;
 
 template <class _InputIterator>
-using __iter_value_type _LIBCPP_NODEBUG = typename iterator_traits<_InputIterator>::value_type;
+using __iter_value_type _LIBCPP_NODEBUG = iterator_traits<_InputIterator>::value_type;
 
 #if _LIBCPP_STD_VER >= 23
 template <class _InputIterator>
@@ -439,7 +439,7 @@ using __iter_key_type _LIBCPP_NODEBUG =
     __remove_const_t<typename iterator_traits<_InputIterator>::value_type::first_type>;
 
 template <class _InputIterator>
-using __iter_mapped_type _LIBCPP_NODEBUG = typename iterator_traits<_InputIterator>::value_type::second_type;
+using __iter_mapped_type _LIBCPP_NODEBUG = iterator_traits<_InputIterator>::value_type::second_type;
 
 template <class _InputIterator>
 using __iter_to_alloc_type _LIBCPP_NODEBUG =
@@ -448,16 +448,16 @@ using __iter_to_alloc_type _LIBCPP_NODEBUG =
 #endif // _LIBCPP_STD_VER >= 23
 
 template <class _Iter>
-using __iterator_category_type _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::iterator_category;
+using __iterator_category_type _LIBCPP_NODEBUG = iterator_traits<_Iter>::iterator_category;
 
 template <class _Iter>
-using __iterator_pointer_type _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::pointer;
+using __iterator_pointer_type _LIBCPP_NODEBUG = iterator_traits<_Iter>::pointer;
 
 template <class _Iter>
-using __iter_diff_t _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::difference_type;
+using __iter_diff_t _LIBCPP_NODEBUG = iterator_traits<_Iter>::difference_type;
 
 template <class _Iter>
-using __iter_reference _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::reference;
+using __iter_reference _LIBCPP_NODEBUG = iterator_traits<_Iter>::reference;
 
 #if _LIBCPP_STD_VER >= 20
 
@@ -469,9 +469,9 @@ using __iter_reference _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::refere
 // This has to be in this file and not readable_traits.h to break the include cycle between the two.
 template <class _Ip>
 using iter_value_t =
-    typename conditional_t<__is_primary_template<iterator_traits<remove_cvref_t<_Ip> > >::value,
-                           indirectly_readable_traits<remove_cvref_t<_Ip> >,
-                           iterator_traits<remove_cvref_t<_Ip> > >::value_type;
+    conditional_t<__is_primary_template<iterator_traits<remove_cvref_t<_Ip> > >::value,
+                  indirectly_readable_traits<remove_cvref_t<_Ip> >,
+                  iterator_traits<remove_cvref_t<_Ip> > >::value_type;
 
 #endif // _LIBCPP_STD_VER >= 20
 

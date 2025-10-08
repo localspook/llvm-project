@@ -41,8 +41,8 @@ template <class _Cp, bool _IsConst>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI __bit_iterator<_Cp, false> __copy_backward_aligned(
     __bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, __bit_iterator<_Cp, false> __result) {
   using _In             = __bit_iterator<_Cp, _IsConst>;
-  using difference_type = typename _In::difference_type;
-  using __storage_type  = typename _In::__storage_type;
+  using difference_type = _In::difference_type;
+  using __storage_type  = _In::__storage_type;
 
   const int __bits_per_word = _In::__bits_per_word;
   difference_type __n       = __last - __first;
@@ -83,8 +83,8 @@ template <class _Cp, bool _IsConst>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI __bit_iterator<_Cp, false> __copy_backward_unaligned(
     __bit_iterator<_Cp, _IsConst> __first, __bit_iterator<_Cp, _IsConst> __last, __bit_iterator<_Cp, false> __result) {
   using _In             = __bit_iterator<_Cp, _IsConst>;
-  using difference_type = typename _In::difference_type;
-  using __storage_type  = typename _In::__storage_type;
+  using difference_type = _In::difference_type;
+  using __storage_type  = _In::__storage_type;
 
   const int __bits_per_word = _In::__bits_per_word;
   difference_type __n       = __last - __first;
@@ -214,7 +214,7 @@ struct __copy_backward_impl {
 
     auto __local_last = _Traits::__local(__result);
     while (true) {
-      using _DiffT = typename common_type<__iter_diff_t<_InIter>, __iter_diff_t<_OutIter> >::type;
+      using _DiffT = common_type<__iter_diff_t<_InIter>, __iter_diff_t<_OutIter> >::type;
 
       auto __local_first = _Traits::__begin(__segment_iterator);
       auto __size        = std::min<_DiffT>(__local_last - __local_first, __last - __first);

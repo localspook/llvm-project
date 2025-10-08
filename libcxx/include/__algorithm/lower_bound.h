@@ -63,7 +63,7 @@ __lower_bound_onesided(_ForwardIterator __first, _Sent __last, const _Type& __va
   if (__first == __last || !std::__invoke(__comp, std::__invoke(__proj, *__first), __value))
     return __first;
 
-  using _Distance = typename iterator_traits<_ForwardIterator>::difference_type;
+  using _Distance = iterator_traits<_ForwardIterator>::difference_type;
   for (_Distance __step = 1; __first != __last; __step <<= 1) {
     auto __it   = __first;
     auto __dist = __step - _IterOps<_AlgPolicy>::__advance_to(__it, __step, __last);

@@ -298,8 +298,8 @@ __handle_replacement_field(_Iterator __begin, _Iterator __end, _ParseCtx& __pars
 }
 
 template <class _ParseCtx, class _Ctx>
-_LIBCPP_HIDE_FROM_ABI constexpr typename _Ctx::iterator __vformat_to(_ParseCtx&& __parse_ctx, _Ctx&& __ctx) {
-  using _CharT = typename _ParseCtx::char_type;
+_LIBCPP_HIDE_FROM_ABI constexpr _Ctx::iterator __vformat_to(_ParseCtx&& __parse_ctx, _Ctx&& __ctx) {
+  using _CharT = _ParseCtx::char_type;
   static_assert(same_as<typename _Ctx::char_type, _CharT>);
 
   auto __begin                     = __parse_ctx.begin();

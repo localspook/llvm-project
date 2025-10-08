@@ -44,7 +44,7 @@ struct __copy_cv<const volatile _From> {
 };
 
 template <class _From, class _To>
-using __copy_cv_t _LIBCPP_NODEBUG = typename __copy_cv<_From>::template __apply<_To>;
+using __copy_cv_t _LIBCPP_NODEBUG = __copy_cv<_From>::template __apply<_To>;
 
 _LIBCPP_END_NAMESPACE_STD
 

@@ -234,7 +234,7 @@ public:
   _LIBCPP_HIDE_FROM_ABI __hash_map_hasher(const _Hash& __h) : __hash_(__h) {}
   _LIBCPP_HIDE_FROM_ABI const _Hash& hash_function() const { return __hash_; }
   _LIBCPP_HIDE_FROM_ABI size_t operator()(const _Tp& __x) const { return __hash_(__x.first); }
-  _LIBCPP_HIDE_FROM_ABI size_t operator()(const typename _Tp::first_type& __x) const { return __hash_(__x); }
+  _LIBCPP_HIDE_FROM_ABI size_t operator()(const _Tp::first_type& __x) const { return __hash_(__x); }
 };
 
 template <class _Tp, class _Pred>
@@ -246,14 +246,14 @@ public:
   _LIBCPP_HIDE_FROM_ABI __hash_map_equal(const _Pred& __p) : __pred_(__p) {}
   _LIBCPP_HIDE_FROM_ABI const _Pred& key_eq() const { return __pred_; }
   _LIBCPP_HIDE_FROM_ABI bool operator()(const _Tp& __x, const _Tp& __y) const { return __pred_(__x.first, __y.first); }
-  _LIBCPP_HIDE_FROM_ABI bool operator()(const typename _Tp::first_type& __x, const _Tp& __y) const {
+  _LIBCPP_HIDE_FROM_ABI bool operator()(const _Tp::first_type& __x, const _Tp& __y) const {
     return __pred_(__x, __y.first);
   }
-  _LIBCPP_HIDE_FROM_ABI bool operator()(const _Tp& __x, const typename _Tp::first_type& __y) const {
+  _LIBCPP_HIDE_FROM_ABI bool operator()(const _Tp& __x, const _Tp::first_type& __y) const {
     return __pred_(__x.first, __y);
   }
   _LIBCPP_HIDE_FROM_ABI bool
-  operator()(const typename _Tp::first_type& __x, const typename _Tp::first_type& __y) const {
+  operator()(const _Tp::first_type& __x, const _Tp::first_type& __y) const {
     return __pred_(__x, __y);
   }
 };
@@ -262,14 +262,14 @@ template <class _Alloc>
 class __hash_map_node_destructor {
   typedef _Alloc allocator_type;
   typedef std::allocator_traits<allocator_type> __alloc_traits;
-  typedef typename __alloc_traits::value_type::__node_value_type value_type;
+  typedef __alloc_traits::value_type::__node_value_type value_type;
 
 public:
-  typedef typename __alloc_traits::pointer pointer;
+  typedef __alloc_traits::pointer pointer;
 
 private:
-  typedef typename value_type::first_type first_type;
-  typedef typename value_type::second_type second_type;
+  typedef value_type::first_type first_type;
+  typedef value_type::second_type second_type;
 
   allocator_type& __na_;
 
@@ -309,13 +309,13 @@ template <class _HashIterator>
 class __hash_map_iterator {
   _HashIterator __i_;
 
-  typedef const typename _HashIterator::value_type::first_type key_type;
-  typedef typename _HashIterator::value_type::second_type mapped_type;
+  typedef const _HashIterator::value_type::first_type key_type;
+  typedef _HashIterator::value_type::second_type mapped_type;
 
 public:
   typedef std::forward_iterator_tag iterator_category;
   typedef std::pair<key_type, mapped_type> value_type;
-  typedef typename _HashIterator::difference_type difference_type;
+  typedef _HashIterator::difference_type difference_type;
   typedef value_type& reference;
   typedef std::__rebind_pointer_t<typename _HashIterator::pointer, value_type> pointer;
 
@@ -359,13 +359,13 @@ template <class _HashIterator>
 class __hash_map_const_iterator {
   _HashIterator __i_;
 
-  typedef const typename _HashIterator::value_type::first_type key_type;
-  typedef typename _HashIterator::value_type::second_type mapped_type;
+  typedef const _HashIterator::value_type::first_type key_type;
+  typedef _HashIterator::value_type::second_type mapped_type;
 
 public:
   typedef std::forward_iterator_tag iterator_category;
   typedef std::pair<key_type, mapped_type> value_type;
-  typedef typename _HashIterator::difference_type difference_type;
+  typedef _HashIterator::difference_type difference_type;
   typedef const value_type& reference;
   typedef std::__rebind_pointer_t<typename _HashIterator::pointer, const value_type> pointer;
 
@@ -435,18 +435,18 @@ private:
 
   __table __table_;
 
-  typedef typename __table::__node_traits __node_traits;
-  typedef typename __table::__node_allocator __node_allocator;
-  typedef typename __table::__node __node;
+  typedef __table::__node_traits __node_traits;
+  typedef __table::__node_allocator __node_allocator;
+  typedef __table::__node __node;
   typedef __hash_map_node_destructor<__node_allocator> _Dp;
   typedef std::unique_ptr<__node, _Dp> __node_holder;
   typedef std::allocator_traits<allocator_type> __alloc_traits;
 
 public:
-  typedef typename __alloc_traits::pointer pointer;
-  typedef typename __alloc_traits::const_pointer const_pointer;
-  typedef typename __alloc_traits::size_type size_type;
-  typedef typename __alloc_traits::difference_type difference_type;
+  typedef __alloc_traits::pointer pointer;
+  typedef __alloc_traits::const_pointer const_pointer;
+  typedef __alloc_traits::size_type size_type;
+  typedef __alloc_traits::difference_type difference_type;
 
   typedef __hash_map_iterator<typename __table::iterator> iterator;
   typedef __hash_map_const_iterator<typename __table::const_iterator> const_iterator;
@@ -576,7 +576,7 @@ hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::hash_map(const hash_map& __u) : __tab
 }
 
 template <class _Key, class _Tp, class _Hash, class _Pred, class _Alloc>
-typename hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::__node_holder
+hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::__node_holder
 hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::__construct_node(const key_type& __k) {
   __node_allocator& __na = __table_.__node_alloc();
   __node_holder __h(__node_traits::allocate(__na, 1), _Dp(__na));
@@ -616,7 +616,7 @@ _LIBCPP_HIDE_FROM_ABI bool
 operator==(const hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __x, const hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>& __y) {
   if (__x.size() != __y.size())
     return false;
-  typedef typename hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
+  typedef hash_map<_Key, _Tp, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
   for (const_iterator __i = __x.begin(), __ex = __x.end(), __ey = __y.end(); __i != __ex; ++__i) {
     const_iterator __j = __y.find(__i->first);
     if (__j == __ey || !(*__i == *__j))
@@ -659,17 +659,17 @@ private:
 
   __table __table_;
 
-  typedef typename __table::__node_allocator __node_allocator;
-  typedef typename __table::__node __node;
+  typedef __table::__node_allocator __node_allocator;
+  typedef __table::__node __node;
   typedef __hash_map_node_destructor<__node_allocator> _Dp;
   typedef std::unique_ptr<__node, _Dp> __node_holder;
   typedef std::allocator_traits<allocator_type> __alloc_traits;
 
 public:
-  typedef typename __alloc_traits::pointer pointer;
-  typedef typename __alloc_traits::const_pointer const_pointer;
-  typedef typename __alloc_traits::size_type size_type;
-  typedef typename __alloc_traits::difference_type difference_type;
+  typedef __alloc_traits::pointer pointer;
+  typedef __alloc_traits::const_pointer const_pointer;
+  typedef __alloc_traits::size_type size_type;
+  typedef __alloc_traits::difference_type difference_type;
 
   typedef __hash_map_iterator<typename __table::iterator> iterator;
   typedef __hash_map_const_iterator<typename __table::const_iterator> const_iterator;
@@ -807,7 +807,7 @@ _LIBCPP_HIDE_FROM_ABI bool operator==(const hash_multimap<_Key, _Tp, _Hash, _Pre
                                       const hash_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>& __y) {
   if (__x.size() != __y.size())
     return false;
-  typedef typename hash_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
+  typedef hash_multimap<_Key, _Tp, _Hash, _Pred, _Alloc>::const_iterator const_iterator;
   typedef std::pair<const_iterator, const_iterator> _EqRng;
   for (const_iterator __i = __x.begin(), __ex = __x.end(); __i != __ex;) {
     _EqRng __xeq = __x.equal_range(__i->first);

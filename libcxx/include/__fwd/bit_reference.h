@@ -17,7 +17,7 @@
 
 _LIBCPP_BEGIN_NAMESPACE_STD
 
-template <class _Cp, bool _IsConst, typename _Cp::__storage_type = 0>
+template <class _Cp, bool _IsConst, _Cp::__storage_type = 0>
 class __bit_iterator;
 
 template <class _Cp>

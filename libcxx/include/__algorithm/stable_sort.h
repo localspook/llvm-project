@@ -48,7 +48,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void __insertion_sort_move(
     _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
+  typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
   if (__first1 != __last1) {
     __destruct_n __d(0);
     unique_ptr<value_type, __destruct_n&> __h(__first2, __d);
@@ -83,7 +83,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void __merge_move_construct(
     _Compare __comp) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_InputIterator1>::value_type value_type;
+  typedef iterator_traits<_InputIterator1>::value_type value_type;
   __destruct_n __d(0);
   unique_ptr<value_type, __destruct_n&> __h(__result, __d);
   for (; true; ++__result) {
@@ -157,7 +157,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 void __stable_sort_move(
     typename iterator_traits<_RandomAccessIterator>::value_type* __first2) {
   using _Ops = _IterOps<_AlgPolicy>;
 
-  typedef typename iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::value_type value_type;
   switch (__len) {
   case 0:
     return;
@@ -227,8 +227,8 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 void __stable_sort(
     typename iterator_traits<_RandomAccessIterator>::difference_type __len,
     typename iterator_traits<_RandomAccessIterator>::value_type* __buff,
     ptrdiff_t __buff_size) {
-  typedef typename iterator_traits<_RandomAccessIterator>::value_type value_type;
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::value_type value_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   switch (__len) {
   case 0:
   case 1:
@@ -289,8 +289,8 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 void __stable_sort(
 template <class _AlgPolicy, class _RandomAccessIterator, class _Compare>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 void
 __stable_sort_impl(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compare& __comp) {
-  using value_type      = typename iterator_traits<_RandomAccessIterator>::value_type;
-  using difference_type = typename iterator_traits<_RandomAccessIterator>::difference_type;
+  using value_type      = iterator_traits<_RandomAccessIterator>::value_type;
+  using difference_type = iterator_traits<_RandomAccessIterator>::difference_type;
 
   difference_type __len = __last - __first;
   __unique_temporary_buffer<value_type> __unique_buf;

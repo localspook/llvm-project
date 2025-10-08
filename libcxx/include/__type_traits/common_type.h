@@ -31,7 +31,7 @@ template <class... _Args>
 struct common_type;
 
 template <class... _Args>
-using __common_type_t _LIBCPP_NODEBUG = typename common_type<_Args...>::type;
+using __common_type_t _LIBCPP_NODEBUG = common_type<_Args...>::type;
 
 template <class... _Args>
 struct common_type : __builtin_common_type<__common_type_t, __type_identity, __empty, _Args...> {};
@@ -109,7 +109,7 @@ struct common_type<_Tp, _Up, _Vp, _Rest...> : __common_type_impl<__common_types<
 
 #if _LIBCPP_STD_VER >= 14
 template <class... _Tp>
-using common_type_t = typename common_type<_Tp...>::type;
+using common_type_t = common_type<_Tp...>::type;
 #endif
 
 _LIBCPP_END_NAMESPACE_STD

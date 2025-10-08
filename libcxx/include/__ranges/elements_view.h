@@ -144,7 +144,7 @@ template <forward_range _Base, size_t _Np>
 struct __elements_view_iterator_category_base<_Base, _Np> {
   static consteval auto __get_iterator_category() {
     using _Result = decltype(std::get<_Np>(*std::declval<iterator_t<_Base>>()));
-    using _Cat    = typename iterator_traits<iterator_t<_Base>>::iterator_category;
+    using _Cat    = iterator_traits<iterator_t<_Base>>::iterator_category;
 
     if constexpr (!is_lvalue_reference_v<_Result>) {
       return input_iterator_tag{};

@@ -82,7 +82,7 @@ template <class... _Args>
 using __invoke_result _LIBCPP_NODEBUG = __invoke_result_impl<void, _Args...>;
 
 template <class... _Args>
-using __invoke_result_t _LIBCPP_NODEBUG = typename __invoke_result<_Args...>::type;
+using __invoke_result_t _LIBCPP_NODEBUG = __invoke_result<_Args...>::type;
 
 template <class... _Args>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR __invoke_result_t<_Args...> __invoke(_Args&&... __args)

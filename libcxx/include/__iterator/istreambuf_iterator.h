@@ -36,12 +36,12 @@ class istreambuf_iterator
 public:
   typedef input_iterator_tag iterator_category;
   typedef _CharT value_type;
-  typedef typename _Traits::off_type difference_type;
+  typedef _Traits::off_type difference_type;
   typedef _CharT* pointer;
   typedef _CharT reference;
   typedef _CharT char_type;
   typedef _Traits traits_type;
-  typedef typename _Traits::int_type int_type;
+  typedef _Traits::int_type int_type;
   typedef basic_streambuf<_CharT, _Traits> streambuf_type;
   typedef basic_istream<_CharT, _Traits> istream_type;
 

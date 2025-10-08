@@ -703,13 +703,13 @@ template <__fmt_char_type _CharT>
 struct __formatter_chrono {
 public:
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator
   __parse(_ParseContext& __ctx, __format_spec::__fields __fields, __format_spec::__flags __flags) {
     return __parser_.__parse(__ctx, __fields, __flags);
   }
 
   template <class _Tp, class _FormatContext>
-  _LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator format(const _Tp& __value, _FormatContext& __ctx) const {
+  _LIBCPP_HIDE_FROM_ABI _FormatContext::iterator format(const _Tp& __value, _FormatContext& __ctx) const {
     return __formatter::__format_chrono(
         __value, __ctx, __parser_.__parser_.__get_parsed_chrono_specifications(__ctx), __parser_.__chrono_specs_);
   }
@@ -723,7 +723,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__clock);
   }
 };
@@ -773,7 +773,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__clock);
   }
 };
@@ -784,7 +784,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     // The flags are not __clock since there is no associated time-zone.
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__date_time);
   }
@@ -796,7 +796,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     // [time.format]/1
     // Giving a precision specification in the chrono-format-spec is valid only
     // for std::chrono::duration types where the representation type Rep is a
@@ -818,7 +818,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__day);
   }
 };
@@ -829,7 +829,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__month);
   }
 };
@@ -840,7 +840,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__year);
   }
 };
@@ -851,7 +851,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__weekday);
   }
 };
@@ -862,7 +862,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__weekday);
   }
 };
@@ -873,7 +873,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__weekday);
   }
 };
@@ -884,7 +884,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__month_day);
   }
 };
@@ -895,7 +895,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__month);
   }
 };
@@ -906,7 +906,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__month_weekday);
   }
 };
@@ -917,7 +917,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__month_weekday);
   }
 };
@@ -928,7 +928,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__year_month);
   }
 };
@@ -939,7 +939,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__date);
   }
 };
@@ -950,7 +950,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__date);
   }
 };
@@ -961,7 +961,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__date);
   }
 };
@@ -972,7 +972,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__date);
   }
 };
@@ -983,7 +983,7 @@ public:
   using _Base _LIBCPP_NODEBUG = __formatter_chrono<_CharT>;
 
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     return _Base::__parse(__ctx, __format_spec::__fields_chrono, __format_spec::__flags::__time);
   }
 };

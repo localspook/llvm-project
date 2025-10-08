@@ -49,7 +49,7 @@ struct __pointer_traits_element_type : __pointer_traits_element_type_impl<_Ptr> 
 
 template <class _Ptr>
 struct __pointer_traits_element_type<_Ptr, __void_t<typename _Ptr::element_type> > {
-  using type _LIBCPP_NODEBUG = typename _Ptr::element_type;
+  using type _LIBCPP_NODEBUG = _Ptr::element_type;
 };
 
 template <class _Tp, class _Up>
@@ -68,14 +68,14 @@ struct __pointer_traits_rebind : __pointer_traits_rebind_impl<_Tp, _Up> {};
 template <class _Tp, class _Up>
 struct __pointer_traits_rebind<_Tp, _Up, __void_t<typename _Tp::template rebind<_Up> > > {
 #ifndef _LIBCPP_CXX03_LANG
-  using type _LIBCPP_NODEBUG = typename _Tp::template rebind<_Up>;
+  using type _LIBCPP_NODEBUG = _Tp::template rebind<_Up>;
 #else
   using type _LIBCPP_NODEBUG = typename _Tp::template rebind<_Up>::other;
 #endif
 };
 
 template <class _Tp>
-using __difference_type_member _LIBCPP_NODEBUG = typename _Tp::difference_type;
+using __difference_type_member _LIBCPP_NODEBUG = _Tp::difference_type;
 
 template <class _Ptr, class = void>
 struct __pointer_traits_impl {};
@@ -83,12 +83,12 @@ struct __pointer_traits_impl {};
 template <class _Ptr>
 struct __pointer_traits_impl<_Ptr, __void_t<typename __pointer_traits_element_type<_Ptr>::type> > {
   typedef _Ptr pointer;
-  typedef typename __pointer_traits_element_type<pointer>::type element_type;
+  typedef __pointer_traits_element_type<pointer>::type element_type;
   using difference_type = __detected_or_t<ptrdiff_t, __difference_type_member, pointer>;
 
 #ifndef _LIBCPP_CXX03_LANG
   template <class _Up>
-  using rebind = typename __pointer_traits_rebind<pointer, _Up>::type;
+  using rebind = __pointer_traits_rebind<pointer, _Up>::type;
 #else
   template <class _Up>
   struct rebind {
@@ -131,7 +131,7 @@ public:
 
 #ifndef _LIBCPP_CXX03_LANG
 template <class _From, class _To>
-using __rebind_pointer_t _LIBCPP_NODEBUG = typename pointer_traits<_From>::template rebind<_To>;
+using __rebind_pointer_t _LIBCPP_NODEBUG = pointer_traits<_From>::template rebind<_To>;
 #else
 template <class _From, class _To>
 using __rebind_pointer_t _LIBCPP_NODEBUG = typename pointer_traits<_From>::template rebind<_To>::other;
@@ -259,7 +259,7 @@ concept __resettable_smart_pointer_with_args = requires(_Smart __s, _Pointer __p
 template <class _PtrTo, class _PtrFrom>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI _PtrTo __static_fancy_pointer_cast(const _PtrFrom& __p) {
   using __ptr_traits   = pointer_traits<_PtrTo>;
-  using __element_type = typename __ptr_traits::element_type;
+  using __element_type = __ptr_traits::element_type;
   return __p ? __ptr_traits::pointer_to(*static_cast<__element_type*>(std::addressof(*__p)))
              : static_cast<_PtrTo>(nullptr);
 }

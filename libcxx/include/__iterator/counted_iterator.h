@@ -47,7 +47,7 @@ struct __counted_iterator_concept {};
 template <class _Iter>
   requires requires { typename _Iter::iterator_concept; }
 struct __counted_iterator_concept<_Iter> {
-  using iterator_concept = typename _Iter::iterator_concept;
+  using iterator_concept = _Iter::iterator_concept;
 };
 
 template <class>
@@ -56,7 +56,7 @@ struct __counted_iterator_category {};
 template <class _Iter>
   requires requires { typename _Iter::iterator_category; }
 struct __counted_iterator_category<_Iter> {
-  using iterator_category = typename _Iter::iterator_category;
+  using iterator_category = _Iter::iterator_category;
 };
 
 template <class>

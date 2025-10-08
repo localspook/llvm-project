@@ -208,7 +208,7 @@ _LIBCPP_HIDE_FROM_ABI _Rp __visit_format_arg(_Visitor&& __vis, basic_format_arg<
 /// separate arrays.
 template <class _Context>
 class __basic_format_arg_value {
-  using _CharT _LIBCPP_NODEBUG = typename _Context::char_type;
+  using _CharT _LIBCPP_NODEBUG = _Context::char_type;
 
 public:
   /// Contains the implementation for basic_format_arg::handle.
@@ -332,7 +332,7 @@ public:
 #  endif // _LIBCPP_STD_VER >= 26 && _LIBCPP_HAS_EXPLICIT_THIS_PARAMETER
 
 private:
-  using char_type = typename _Context::char_type;
+  using char_type = _Context::char_type;
 
   // TODO FMT Implement constrain [format.arg]/4
   // Constraints: The template specialization
@@ -361,11 +361,11 @@ public:
     __handle_.__format_(__parse_ctx, __ctx, __handle_.__ptr_);
   }
 
-  _LIBCPP_HIDE_FROM_ABI explicit handle(typename __basic_format_arg_value<_Context>::__handle& __handle) noexcept
+  _LIBCPP_HIDE_FROM_ABI explicit handle(__basic_format_arg_value<_Context>::__handle& __handle) noexcept
       : __handle_(__handle) {}
 
 private:
-  typename __basic_format_arg_value<_Context>::__handle& __handle_;
+  __basic_format_arg_value<_Context>::__handle& __handle_;
 };
 
 // This function is user facing, so it must wrap the non-standard types of

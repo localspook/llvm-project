@@ -57,7 +57,7 @@ class shuffle_order_engine {
 
 public:
   // types
-  typedef typename _Engine::result_type result_type;
+  typedef _Engine::result_type result_type;
 
 private:
   _Engine __e_;
@@ -202,7 +202,7 @@ operator<<(basic_ostream<_CharT, _Traits>& __os, const shuffle_order_engine<_Eng
 template <class _CharT, class _Traits, class _Eng, size_t _Kp>
 _LIBCPP_HIDE_FROM_ABI basic_istream<_CharT, _Traits>&
 operator>>(basic_istream<_CharT, _Traits>& __is, shuffle_order_engine<_Eng, _Kp>& __x) {
-  typedef typename shuffle_order_engine<_Eng, _Kp>::result_type result_type;
+  typedef shuffle_order_engine<_Eng, _Kp>::result_type result_type;
   __save_flags<_CharT, _Traits> __lx(__is);
   typedef basic_istream<_CharT, _Traits> _Istream;
   __is.flags(_Istream::dec | _Istream::skipws);

@@ -257,7 +257,7 @@ public:
   /// Like @ref __copy it may need to do type conversion.
   template <contiguous_iterator _Iterator,
             class _UnaryOperation,
-            __fmt_char_type _InCharT = typename iterator_traits<_Iterator>::value_type>
+            __fmt_char_type _InCharT = iterator_traits<_Iterator>::value_type>
   _LIBCPP_HIDE_FROM_ABI void __transform(_Iterator __first, _Iterator __last, _UnaryOperation __operation) {
     _LIBCPP_ASSERT_INTERNAL(__first <= __last, "not a valid range");
 
@@ -452,7 +452,7 @@ public:
   }
 
 private:
-  typename __back_insert_iterator_container<_OutIt>::type* __container_;
+  __back_insert_iterator_container<_OutIt>::type* __container_;
 
   // This class uses a fixed size buffer and appends the elements in
   // __buffer_size chunks. An alternative would be to use an allocating buffer
@@ -647,7 +647,7 @@ public:
 
   template <contiguous_iterator _Iterator,
             class _UnaryOperation,
-            __fmt_char_type _InCharT = typename iterator_traits<_Iterator>::value_type>
+            __fmt_char_type _InCharT = iterator_traits<_Iterator>::value_type>
   _LIBCPP_HIDE_FROM_ABI void __transform(_Iterator __first, _Iterator __last, _UnaryOperation __operation) {
     _LIBCPP_ASSERT_INTERNAL(__first <= __last, "not a valid range");
 

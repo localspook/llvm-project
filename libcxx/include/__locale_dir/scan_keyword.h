@@ -48,7 +48,7 @@ _LIBCPP_HIDE_FROM_ABI _ForwardIterator __scan_keyword(
     const _Ctype& __ct,
     ios_base::iostate& __err,
     bool __case_sensitive = true) {
-  typedef typename iterator_traits<_InputIterator>::value_type _CharT;
+  typedef iterator_traits<_InputIterator>::value_type _CharT;
   size_t __nkw                       = static_cast<size_t>(std::distance(__kb, __ke));
   const unsigned char __doesnt_match = '\0';
   const unsigned char __might_match  = '\1';

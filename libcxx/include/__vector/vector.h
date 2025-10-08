@@ -98,10 +98,10 @@ public:
   using __alloc_traits _LIBCPP_NODEBUG = allocator_traits<allocator_type>;
   using reference                      = value_type&;
   using const_reference                = const value_type&;
-  using size_type                      = typename __alloc_traits::size_type;
-  using difference_type                = typename __alloc_traits::difference_type;
-  using pointer                        = typename __alloc_traits::pointer;
-  using const_pointer                  = typename __alloc_traits::const_pointer;
+  using size_type                      = __alloc_traits::size_type;
+  using difference_type                = __alloc_traits::difference_type;
+  using pointer                        = __alloc_traits::pointer;
+  using const_pointer                  = __alloc_traits::const_pointer;
 #ifdef _LIBCPP_ABI_BOUNDED_ITERATORS_IN_VECTOR
   // Users might provide custom allocators, and prior to C++20 we have no existing way to detect whether the allocator's
   // pointer type is contiguous (though it has to be by the Standard). Using the wrapper type ensures the iterator is
@@ -886,7 +886,7 @@ vector<_Tp, _Allocator>::__swap_out_circular_buffer(__split_buffer<value_type, a
 // exactly (__p - __begin_) objects in the front and space for at least (__end_ - __p) objects in the back. This
 // function has a strong exception guarantee if __begin_ == __p || __end_ == __p.
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::pointer
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::pointer
 vector<_Tp, _Allocator>::__swap_out_circular_buffer(__split_buffer<value_type, allocator_type&>& __v, pointer __p) {
   __annotate_delete();
   pointer __ret = __v.begin();
@@ -922,7 +922,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 void vector<_Tp, _Allocator>::__vdeallocate() _NOE
 
 //  Precondition:  __new_size > capacity()
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 inline _LIBCPP_HIDE_FROM_ABI typename vector<_Tp, _Allocator>::size_type
+_LIBCPP_CONSTEXPR_SINCE_CXX20 inline _LIBCPP_HIDE_FROM_ABI vector<_Tp, _Allocator>::size_type
 vector<_Tp, _Allocator>::__recommend(size_type __new_size) const {
   const size_type __ms = max_size();
   if (__new_size > __ms)
@@ -1149,7 +1149,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 void vector<_Tp, _Allocator>::shrink_to_fit() _NOE
 
 template <class _Tp, class _Allocator>
 template <class... _Args>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::pointer
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::pointer
 vector<_Tp, _Allocator>::__emplace_back_slow_path(_Args&&... __args) {
   __split_buffer<value_type, allocator_type&> __v(__recommend(size() + 1), size(), this->__alloc_);
   //    __v.emplace_back(std::forward<_Args>(__args)...);
@@ -1182,7 +1182,7 @@ template <class _Tp, class _Allocator>
 template <class... _Args>
 _LIBCPP_CONSTEXPR_SINCE_CXX20 inline
 #if _LIBCPP_STD_VER >= 17
-    typename vector<_Tp, _Allocator>::reference
+    vector<_Tp, _Allocator>::reference
 #else
     void
 #endif
@@ -1203,7 +1203,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX20 inline
 }
 
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 inline _LIBCPP_HIDE_FROM_ABI typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 inline _LIBCPP_HIDE_FROM_ABI vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::erase(const_iterator __position) {
   _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(
       __position != end(), "vector::erase(iterator) called with a non-dereferenceable iterator");
@@ -1214,7 +1214,7 @@ vector<_Tp, _Allocator>::erase(const_iterator __position) {
 }
 
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::erase(const_iterator __first, const_iterator __last) {
   _LIBCPP_ASSERT_VALID_INPUT_RANGE(__first <= __last, "vector::erase(first, last) called with invalid range");
   pointer __p = this->__begin_ + (__first - begin());
@@ -1240,7 +1240,7 @@ vector<_Tp, _Allocator>::__move_range(pointer __from_s, pointer __from_e, pointe
 }
 
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::insert(const_iterator __position, const_reference __x) {
   pointer __p = this->__begin_ + (__position - begin());
   if (this->__end_ < this->__cap_) {
@@ -1262,7 +1262,7 @@ vector<_Tp, _Allocator>::insert(const_iterator __position, const_reference __x) 
 }
 
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::insert(const_iterator __position, value_type&& __x) {
   pointer __p = this->__begin_ + (__position - begin());
   if (this->__end_ < this->__cap_) {
@@ -1282,7 +1282,7 @@ vector<_Tp, _Allocator>::insert(const_iterator __position, value_type&& __x) {
 
 template <class _Tp, class _Allocator>
 template <class... _Args>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::emplace(const_iterator __position, _Args&&... __args) {
   pointer __p = this->__begin_ + (__position - begin());
   if (this->__end_ < this->__cap_) {
@@ -1302,7 +1302,7 @@ vector<_Tp, _Allocator>::emplace(const_iterator __position, _Args&&... __args) {
 }
 
 template <class _Tp, class _Allocator>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::insert(const_iterator __position, size_type __n, const_reference __x) {
   pointer __p = this->__begin_ + (__position - begin());
   if (__n > 0) {
@@ -1332,7 +1332,7 @@ vector<_Tp, _Allocator>::insert(const_iterator __position, size_type __n, const_
 
 template <class _Tp, class _Allocator>
 template <class _InputIterator, class _Sentinel>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::__insert_with_sentinel(const_iterator __position, _InputIterator __first, _Sentinel __last) {
   difference_type __off = __position - begin();
   pointer __p           = this->__begin_ + __off;
@@ -1365,7 +1365,7 @@ vector<_Tp, _Allocator>::__insert_with_sentinel(const_iterator __position, _Inpu
 
 template <class _Tp, class _Allocator>
 template <class _Iterator, class _Sentinel>
-_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI typename vector<_Tp, _Allocator>::iterator
+_LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI vector<_Tp, _Allocator>::iterator
 vector<_Tp, _Allocator>::__insert_with_size(
     const_iterator __position, _Iterator __first, _Sentinel __last, difference_type __n) {
   pointer __p = this->__begin_ + (__position - begin());

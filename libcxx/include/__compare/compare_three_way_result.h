@@ -37,7 +37,7 @@ template <class _Tp, class _Up = _Tp>
 struct _LIBCPP_NO_SPECIALIZATIONS compare_three_way_result : __compare_three_way_result<_Tp, _Up, void> {};
 
 template <class _Tp, class _Up = _Tp>
-using compare_three_way_result_t = typename compare_three_way_result<_Tp, _Up>::type;
+using compare_three_way_result_t = compare_three_way_result<_Tp, _Up>::type;
 
 #endif // _LIBCPP_STD_VER >= 20
 

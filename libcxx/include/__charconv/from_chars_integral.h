@@ -129,7 +129,7 @@ template <typename _Tp, __enable_if_t<is_unsigned<_Tp>::value, int> = 0>
 inline _LIBCPP_CONSTEXPR_SINCE_CXX23 _LIBCPP_HIDE_FROM_ABI from_chars_result
 __from_chars_atoi(const char* __first, const char* __last, _Tp& __value) {
   using __tx          = __itoa::__traits<_Tp>;
-  using __output_type = typename __tx::type;
+  using __output_type = __tx::type;
 
   return std::__subject_seq_combinator(
       __first, __last, __value, [](const char* __f, const char* __l, _Tp& __val) -> from_chars_result {

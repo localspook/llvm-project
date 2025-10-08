@@ -68,7 +68,7 @@ struct __get_as_integer_type_impl<8> {
 };
 
 template <class _Tp>
-using __get_as_integer_type_t _LIBCPP_NODEBUG = typename __get_as_integer_type_impl<sizeof(_Tp)>::type;
+using __get_as_integer_type_t _LIBCPP_NODEBUG = __get_as_integer_type_impl<sizeof(_Tp)>::type;
 
 // This isn't specialized for 64 byte vectors on purpose. They have the potential to significantly reduce performance
 // in mixed simd/non-simd workloads and don't provide any performance improvement for currently vectorized algorithms

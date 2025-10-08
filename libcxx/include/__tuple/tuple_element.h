@@ -23,22 +23,22 @@ struct tuple_element;
 
 template <size_t _Ip, class _Tp>
 struct tuple_element<_Ip, const _Tp> {
-  using type _LIBCPP_NODEBUG = const typename tuple_element<_Ip, _Tp>::type;
+  using type _LIBCPP_NODEBUG = const tuple_element<_Ip, _Tp>::type;
 };
 
 template <size_t _Ip, class _Tp>
 struct tuple_element<_Ip, volatile _Tp> {
-  using type _LIBCPP_NODEBUG = volatile typename tuple_element<_Ip, _Tp>::type;
+  using type _LIBCPP_NODEBUG = volatile tuple_element<_Ip, _Tp>::type;
 };
 
 template <size_t _Ip, class _Tp>
 struct tuple_element<_Ip, const volatile _Tp> {
-  using type _LIBCPP_NODEBUG = const volatile typename tuple_element<_Ip, _Tp>::type;
+  using type _LIBCPP_NODEBUG = const volatile tuple_element<_Ip, _Tp>::type;
 };
 
 #  if _LIBCPP_STD_VER >= 14
 template <size_t _Ip, class... _Tp>
-using tuple_element_t _LIBCPP_NODEBUG = typename tuple_element<_Ip, _Tp...>::type;
+using tuple_element_t _LIBCPP_NODEBUG = tuple_element<_Ip, _Tp...>::type;
 #  endif
 
 _LIBCPP_END_NAMESPACE_STD

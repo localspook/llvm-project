@@ -56,7 +56,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 _ForwardIterator __stable_pa
     return __first;
   }
   if (__len <= __p.second) { // The buffer is big enough to use
-    typedef typename iterator_traits<_ForwardIterator>::value_type value_type;
+    typedef iterator_traits<_ForwardIterator>::value_type value_type;
     __destruct_n __d(0);
     unique_ptr<value_type, __destruct_n&> __h(__p.first, __d);
     // Move the falses into the temporary buffer, and the trues to the front of the line
@@ -119,8 +119,8 @@ __second_half_done:
 template <class _AlgPolicy, class _Predicate, class _ForwardIterator>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 _ForwardIterator
 __stable_partition_impl(_ForwardIterator __first, _ForwardIterator __last, _Predicate __pred, forward_iterator_tag) {
-  typedef typename iterator_traits<_ForwardIterator>::difference_type difference_type;
-  typedef typename iterator_traits<_ForwardIterator>::value_type value_type;
+  typedef iterator_traits<_ForwardIterator>::difference_type difference_type;
+  typedef iterator_traits<_ForwardIterator>::value_type value_type;
 
   const difference_type __alloc_limit = 3; // might want to make this a function of trivial assignment
   // Either prove all true and return __first or point to first false
@@ -174,7 +174,7 @@ _LIBCPP_CONSTEXPR_SINCE_CXX26 _BidirectionalIterator __stable_partition_impl(
     return __m;
   }
   if (__len <= __p.second) { // The buffer is big enough to use
-    typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
+    typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
     __destruct_n __d(0);
     unique_ptr<value_type, __destruct_n&> __h(__p.first, __d);
     // Move the falses into the temporary buffer, and the trues to the front of the line
@@ -250,8 +250,8 @@ __second_half_done:
 template <class _AlgPolicy, class _Predicate, class _BidirectionalIterator>
 _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 _BidirectionalIterator __stable_partition_impl(
     _BidirectionalIterator __first, _BidirectionalIterator __last, _Predicate __pred, bidirectional_iterator_tag) {
-  typedef typename iterator_traits<_BidirectionalIterator>::difference_type difference_type;
-  typedef typename iterator_traits<_BidirectionalIterator>::value_type value_type;
+  typedef iterator_traits<_BidirectionalIterator>::difference_type difference_type;
+  typedef iterator_traits<_BidirectionalIterator>::value_type value_type;
   const difference_type __alloc_limit = 4; // might want to make this a function of trivial assignment
   // Either prove all true and return __first or point to first false
   while (true) {
@@ -293,7 +293,7 @@ _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX26 _ForwardIterator __stable_pa
 template <class _ForwardIterator, class _Predicate>
 _LIBCPP_HIDE_FROM_ABI inline _LIBCPP_CONSTEXPR_SINCE_CXX26 _ForwardIterator
 stable_partition(_ForwardIterator __first, _ForwardIterator __last, _Predicate __pred) {
-  using _IterCategory = typename iterator_traits<_ForwardIterator>::iterator_category;
+  using _IterCategory = iterator_traits<_ForwardIterator>::iterator_category;
   return std::__stable_partition<_ClassicAlgPolicy, _Predicate&>(
       std::move(__first), std::move(__last), __pred, _IterCategory());
 }

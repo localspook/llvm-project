@@ -635,7 +635,7 @@ _LIBCPP_HIDE_FROM_ABI auto __write_using_trailing_zeros(
 }
 
 template <floating_point _Tp, class _CharT, class _FormatContext>
-_LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator
+_LIBCPP_HIDE_FROM_ABI _FormatContext::iterator
 __format_floating_point(_Tp __value, _FormatContext& __ctx, __format_spec::__parsed_specifications<_CharT> __specs) {
   bool __negative = std::signbit(__value);
 
@@ -754,14 +754,14 @@ template <__fmt_char_type _CharT>
 struct __formatter_floating_point {
 public:
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator parse(_ParseContext& __ctx) {
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator parse(_ParseContext& __ctx) {
     typename _ParseContext::iterator __result = __parser_.__parse(__ctx, __format_spec::__fields_floating_point);
     __format_spec::__process_parsed_floating_point(__parser_, "a floating-point");
     return __result;
   }
 
   template <floating_point _Tp, class _FormatContext>
-  _LIBCPP_HIDE_FROM_ABI typename _FormatContext::iterator format(_Tp __value, _FormatContext& __ctx) const {
+  _LIBCPP_HIDE_FROM_ABI _FormatContext::iterator format(_Tp __value, _FormatContext& __ctx) const {
     return __formatter::__format_floating_point(__value, __ctx, __parser_.__get_parsed_std_specifications(__ctx));
   }
 

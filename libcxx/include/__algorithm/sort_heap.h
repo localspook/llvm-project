@@ -35,7 +35,7 @@ __sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compar
   _RandomAccessIterator __saved_last   = __last;
   __comp_ref_type<_Compare> __comp_ref = __comp;
 
-  using difference_type = typename iterator_traits<_RandomAccessIterator>::difference_type;
+  using difference_type = iterator_traits<_RandomAccessIterator>::difference_type;
   for (difference_type __n = __last - __first; __n > 1; --__last, (void)--__n)
     std::__pop_heap<_AlgPolicy>(__first, __last, __comp_ref, __n);
   std::__check_strict_weak_ordering_sorted(__first, __saved_last, __comp_ref);

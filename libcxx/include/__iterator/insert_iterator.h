@@ -58,14 +58,13 @@ public:
   insert_iterator(_Container& __x, __insert_iterator_iter_t<_Container> __i)
       : container(std::addressof(__x)), iter(__i) {}
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 insert_iterator&
-  operator=(const typename _Container::value_type& __value) {
+  operator=(const _Container::value_type& __value) {
     iter = container->insert(iter, __value);
     ++iter;
     return *this;
   }
 #ifndef _LIBCPP_CXX03_LANG
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 insert_iterator&
-  operator=(typename _Container::value_type&& __value) {
+  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 insert_iterator& operator=(_Container::value_type&& __value) {
     iter = container->insert(iter, std::move(__value));
     ++iter;
     return *this;

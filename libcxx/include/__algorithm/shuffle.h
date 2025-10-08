@@ -134,7 +134,7 @@ random_shuffle(_RandomAccessIterator __first,
 template <class _AlgPolicy, class _RandomAccessIterator, class _Sentinel, class _UniformRandomNumberGenerator>
 _LIBCPP_HIDE_FROM_ABI _RandomAccessIterator
 __shuffle(_RandomAccessIterator __first, _Sentinel __last_sentinel, _UniformRandomNumberGenerator&& __g) {
-  typedef typename iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+  typedef iterator_traits<_RandomAccessIterator>::difference_type difference_type;
   typedef uniform_int_distribution<ptrdiff_t> _Dp;
   typedef typename _Dp::param_type _Pp;
 

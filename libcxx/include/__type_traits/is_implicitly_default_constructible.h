@@ -27,7 +27,7 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 template <class _Tp>
 void __test_implicit_default_constructible(_Tp);
 
-template <class _Tp, class = void, class = typename is_default_constructible<_Tp>::type>
+template <class _Tp, class = void, class = is_default_constructible<_Tp>::type>
 struct __is_implicitly_default_constructible : false_type {};
 
 template <class _Tp>

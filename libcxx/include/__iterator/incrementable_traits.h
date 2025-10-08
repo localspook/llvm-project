@@ -46,7 +46,7 @@ concept __has_member_difference_type = requires { typename _Tp::difference_type;
 
 template <__has_member_difference_type _Tp>
 struct incrementable_traits<_Tp> {
-  using difference_type = typename _Tp::difference_type;
+  using difference_type = _Tp::difference_type;
 };
 
 template <class _Tp>
@@ -68,9 +68,9 @@ struct iterator_traits;
 // generated from the primary template, and `iterator_traits<RI>::difference_type` otherwise.
 template <class _Ip>
 using iter_difference_t =
-    typename conditional_t<__is_primary_template<iterator_traits<remove_cvref_t<_Ip> > >::value,
-                           incrementable_traits<remove_cvref_t<_Ip> >,
-                           iterator_traits<remove_cvref_t<_Ip> > >::difference_type;
+    conditional_t<__is_primary_template<iterator_traits<remove_cvref_t<_Ip> > >::value,
+                  incrementable_traits<remove_cvref_t<_Ip> >,
+                  iterator_traits<remove_cvref_t<_Ip> > >::difference_type;
 
 #endif // _LIBCPP_STD_VER >= 20
 

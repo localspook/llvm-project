@@ -79,11 +79,11 @@ struct __static_bounded_iter {
   static_assert(__libcpp_is_contiguous_iterator<_Iterator>::value,
                 "Only contiguous iterators can be adapted by __static_bounded_iter.");
 
-  using value_type        = typename iterator_traits<_Iterator>::value_type;
-  using difference_type   = typename iterator_traits<_Iterator>::difference_type;
-  using pointer           = typename iterator_traits<_Iterator>::pointer;
-  using reference         = typename iterator_traits<_Iterator>::reference;
-  using iterator_category = typename iterator_traits<_Iterator>::iterator_category;
+  using value_type        = iterator_traits<_Iterator>::value_type;
+  using difference_type   = iterator_traits<_Iterator>::difference_type;
+  using pointer           = iterator_traits<_Iterator>::pointer;
+  using reference         = iterator_traits<_Iterator>::reference;
+  using iterator_category = iterator_traits<_Iterator>::iterator_category;
 #if _LIBCPP_STD_VER >= 20
   using iterator_concept = contiguous_iterator_tag;
 #endif
@@ -303,8 +303,8 @@ struct __libcpp_is_contiguous_iterator<__static_bounded_iter<_Iterator, _Size> >
 template <class _Iterator, size_t _Size>
 struct pointer_traits<__static_bounded_iter<_Iterator, _Size> > {
   using pointer         = __static_bounded_iter<_Iterator, _Size>;
-  using element_type    = typename pointer_traits<_Iterator>::element_type;
-  using difference_type = typename pointer_traits<_Iterator>::difference_type;
+  using element_type    = pointer_traits<_Iterator>::element_type;
+  using difference_type = pointer_traits<_Iterator>::difference_type;
 
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR static element_type* to_address(pointer __it) _NOEXCEPT {
     return std::__to_address(__it.__current());

@@ -40,7 +40,7 @@ reduce(_InputIterator __first, _InputIterator __last, _Tp __init) {
 }
 
 template <class _InputIterator>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 typename iterator_traits<_InputIterator>::value_type
+_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 iterator_traits<_InputIterator>::value_type
 reduce(_InputIterator __first, _InputIterator __last) {
   return std::reduce(__first, __last, typename iterator_traits<_InputIterator>::value_type{});
 }

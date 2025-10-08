@@ -30,15 +30,15 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 
 namespace chrono {
 
-template <class _Clock, class _Duration = typename _Clock::duration>
+template <class _Clock, class _Duration = _Clock::duration>
 class time_point {
   static_assert(__is_duration_v<_Duration>, "Second template parameter of time_point must be a std::chrono::duration");
 
 public:
   typedef _Clock clock;
   typedef _Duration duration;
-  typedef typename duration::rep rep;
-  typedef typename duration::period period;
+  typedef duration::rep rep;
+  typedef duration::period period;
 
 private:
   duration __d_;
@@ -217,7 +217,7 @@ operator-(const time_point<_Clock, _Duration1>& __lhs, const duration<_Rep2, _Pe
 // duration operator-(time_point x, time_point y);
 
 template <class _Clock, class _Duration1, class _Duration2>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 typename common_type<_Duration1, _Duration2>::type
+inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX14 common_type<_Duration1, _Duration2>::type
 operator-(const time_point<_Clock, _Duration1>& __lhs, const time_point<_Clock, _Duration2>& __rhs) {
   return __lhs.time_since_epoch() - __rhs.time_since_epoch();
 }

@@ -74,7 +74,7 @@ public:
       _If<__has_random_access_iterator_category<_Iter>::value,
           random_access_iterator_tag,
           typename iterator_traits<_Iter>::iterator_category>;
-  using pointer = typename iterator_traits<_Iter>::pointer;
+  using pointer = iterator_traits<_Iter>::pointer;
 #if _LIBCPP_STD_VER >= 20
   using iterator_concept = _If<random_access_iterator<_Iter>, random_access_iterator_tag, bidirectional_iterator_tag>;
   using value_type       = iter_value_t<_Iter>;

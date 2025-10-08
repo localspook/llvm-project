@@ -140,11 +140,11 @@ _LIBCPP_HIDE_FROM_ABI constexpr void __validate_time_zone(__flags __flags) {
 
 template <class _CharT>
 class __parser_chrono {
-  using _ConstIterator _LIBCPP_NODEBUG = typename basic_format_parse_context<_CharT>::const_iterator;
+  using _ConstIterator _LIBCPP_NODEBUG = basic_format_parse_context<_CharT>::const_iterator;
 
 public:
   template <class _ParseContext>
-  _LIBCPP_HIDE_FROM_ABI constexpr typename _ParseContext::iterator
+  _LIBCPP_HIDE_FROM_ABI constexpr _ParseContext::iterator
   __parse(_ParseContext& __ctx, __fields __fields, __flags __flags) {
     _ConstIterator __begin = __parser_.__parse(__ctx, __fields);
     _ConstIterator __end   = __ctx.end();

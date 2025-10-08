@@ -158,7 +158,7 @@ struct __is_pathable_iter<
     true,
     _Void<typename __can_convert_char< typename iterator_traits<_Iter>::value_type>::__char_type> >
     : __can_convert_char<typename iterator_traits<_Iter>::value_type> {
-  using _ECharT _LIBCPP_NODEBUG = typename iterator_traits<_Iter>::value_type;
+  using _ECharT _LIBCPP_NODEBUG = iterator_traits<_Iter>::value_type;
 
   _LIBCPP_HIDE_FROM_ABI static _Iter __range_begin(_Iter __b) { return __b; }
 
@@ -384,7 +384,7 @@ class _LIBCPP_EXPORTED_FROM_ABI path {
   using _EnableIfPathable _LIBCPP_NODEBUG = __enable_if_t<__is_pathable<_SourceOrIter>::value, _Tp>;
 
   template <class _Tp>
-  using _SourceChar _LIBCPP_NODEBUG = typename __is_pathable<_Tp>::__char_type;
+  using _SourceChar _LIBCPP_NODEBUG = __is_pathable<_Tp>::__char_type;
 
   template <class _Tp>
   using _SourceCVT _LIBCPP_NODEBUG = _PathCVT<_SourceChar<_Tp> >;
@@ -416,7 +416,7 @@ public:
 
   template <class _InputIt>
   _LIBCPP_HIDE_FROM_ABI path(_InputIt __first, _InputIt __last, format = format::auto_format) {
-    typedef typename iterator_traits<_InputIt>::value_type _ItVal;
+    typedef iterator_traits<_InputIt>::value_type _ItVal;
     _PathCVT<_ItVal>::__append_range(__pn_, __first, __last);
   }
 
@@ -468,7 +468,7 @@ public:
 
   template <class _InputIt>
   _LIBCPP_HIDE_FROM_ABI path& assign(_InputIt __first, _InputIt __last) {
-    typedef typename iterator_traits<_InputIt>::value_type _ItVal;
+    typedef iterator_traits<_InputIt>::value_type _ItVal;
     __pn_.clear();
     _PathCVT<_ItVal>::__append_range(__pn_, __first, __last);
     return *this;
@@ -601,7 +601,7 @@ public:
 
   template <class _InputIt>
   _LIBCPP_HIDE_FROM_ABI path& concat(_InputIt __first, _InputIt __last) {
-    typedef typename iterator_traits<_InputIt>::value_type _ItVal;
+    typedef iterator_traits<_InputIt>::value_type _ItVal;
     _PathCVT<_ItVal>::__append_range(__pn_, __first, __last);
     return *this;
   }

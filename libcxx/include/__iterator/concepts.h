@@ -71,10 +71,10 @@ template <class _In>
 concept indirectly_readable = __indirectly_readable_impl<remove_cvref_t<_In>>;
 
 template <class _Tp>
-using __projected_iterator_t _LIBCPP_NODEBUG = typename _Tp::__projected_iterator;
+using __projected_iterator_t _LIBCPP_NODEBUG = _Tp::__projected_iterator;
 
 template <class _Tp>
-using __projected_projection_t _LIBCPP_NODEBUG = typename _Tp::__projected_projection;
+using __projected_projection_t _LIBCPP_NODEBUG = _Tp::__projected_projection;
 
 template <class _Tp>
 concept __specialization_of_projected = requires {
@@ -94,7 +94,7 @@ struct __indirect_value_t_impl<_Tp> {
 };
 
 template <indirectly_readable _Tp>
-using __indirect_value_t _LIBCPP_NODEBUG = typename __indirect_value_t_impl<_Tp>::type;
+using __indirect_value_t _LIBCPP_NODEBUG = __indirect_value_t_impl<_Tp>::type;
 
 template <indirectly_readable _Tp>
 using iter_common_reference_t = common_reference_t<iter_reference_t<_Tp>, __indirect_value_t<_Tp>>;
@@ -160,15 +160,15 @@ struct __iter_traits_cache {
       _If<__is_primary_template<iterator_traits<_Iter> >::value, _Iter, iterator_traits<_Iter> >;
 };
 template <class _Iter>
-using _ITER_TRAITS _LIBCPP_NODEBUG = typename __iter_traits_cache<_Iter>::type;
+using _ITER_TRAITS _LIBCPP_NODEBUG = __iter_traits_cache<_Iter>::type;
 
 struct __iter_concept_concept_test {
   template <class _Iter>
-  using _Apply _LIBCPP_NODEBUG = typename _ITER_TRAITS<_Iter>::iterator_concept;
+  using _Apply _LIBCPP_NODEBUG = _ITER_TRAITS<_Iter>::iterator_concept;
 };
 struct __iter_concept_category_test {
   template <class _Iter>
-  using _Apply _LIBCPP_NODEBUG = typename _ITER_TRAITS<_Iter>::iterator_category;
+  using _Apply _LIBCPP_NODEBUG = _ITER_TRAITS<_Iter>::iterator_category;
 };
 struct __iter_concept_random_fallback {
   template <class _Iter>
@@ -188,7 +188,7 @@ struct __iter_concept_cache {
 };
 
 template <class _Iter>
-using _ITER_CONCEPT _LIBCPP_NODEBUG = typename __iter_concept_cache<_Iter>::type::template _Apply<_Iter>;
+using _ITER_CONCEPT _LIBCPP_NODEBUG = __iter_concept_cache<_Iter>::type::template _Apply<_Iter>;
 
 // [iterator.concept.input]
 template <class _Ip>

@@ -33,7 +33,7 @@ template <size_t _Ip, class _Tp>
 struct variant_alternative;
 
 template <size_t _Ip, class _Tp>
-using variant_alternative_t = typename variant_alternative<_Ip, _Tp>::type;
+using variant_alternative_t = variant_alternative<_Ip, _Tp>::type;
 
 inline constexpr size_t variant_npos = static_cast<size_t>(-1);
 
