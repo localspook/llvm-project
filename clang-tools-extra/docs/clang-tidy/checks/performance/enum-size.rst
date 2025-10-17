@@ -61,7 +61,6 @@ maintainability.
 Enums without enumerators (empty) are excluded from analysis.
 
 Requires C++11 or above.
-Does not provide auto-fixes.
 
 Options
 -------
@@ -72,3 +71,8 @@ Options
     semicolon-separated list of (fully qualified) enum type names or regular
     expressions that match the enum type names. The default value is an empty
     string, which means no enums will be ignored.
+
+.. option:: IncludeStyle
+
+   A string specifying which include sorting order fix-its will adhere to,
+   `llvm` or `google`. Default is `llvm`.

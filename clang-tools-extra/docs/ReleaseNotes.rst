@@ -374,6 +374,10 @@ Changes in existing checks
   when the format string is converted to a different type by an implicit
   constructor call.
 
+- Improved :doc:`performance-enum-size
+  <clang-tidy/checks/performance/enum-size>` by providing fix-its to change
+  an enum's type.
+
 - Improved :doc:`performance-unnecessary-copy-initialization
   <clang-tidy/checks/performance/unnecessary-copy-initialization>` by printing
   the type of the diagnosed variable.

@@ -10,6 +10,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_TIDY_PERFORMANCE_ENUMSIZECHECK_H
 
 #include "../ClangTidyCheck.h"
+#include "../utils/IncludeInserter.h"
 #include <vector>
 
 namespace clang::tidy::performance {
@@ -23,12 +24,15 @@ class EnumSizeCheck : public ClangTidyCheck {
 public:
   EnumSizeCheck(StringRef Name, ClangTidyContext *Context);
   void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+  void registerPPCallbacks(const SourceManager &SM, Preprocessor *PP,
+                           Preprocessor *ModuleExpanderPP) override;
   void check(const ast_matchers::MatchFinder::MatchResult &Result) override;
   void storeOptions(ClangTidyOptions::OptionMap &Opts) override;
   bool isLanguageVersionSupported(const LangOptions &LangOpts) const override;
 
 private:
   const std::vector<StringRef> EnumIgnoreList;
+  utils::IncludeInserter IncludeInserter;
 };
 
 } // namespace clang::tidy::performance

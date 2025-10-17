@@ -11,6 +11,8 @@
 #include "../utils/OptionsUtils.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/Basic/Diagnostic.h"
+#include "clang/Lex/Lexer.h"
 #include <algorithm>
 #include <cinttypes>
 #include <cstdint>
@@ -80,16 +82,26 @@ getNewType(std::size_t Size, std::uint64_t Min, std::uint64_t Max) noexcept {
 EnumSizeCheck::EnumSizeCheck(StringRef Name, ClangTidyContext *Context)
     : ClangTidyCheck(Name, Context),
       EnumIgnoreList(
-          utils::options::parseStringList(Options.get("EnumIgnoreList", ""))) {}
+          utils::options::parseStringList(Options.get("EnumIgnoreList", ""))),
+      IncludeInserter(Options.getLocalOrGlobal("IncludeStyle",
+                                               utils::IncludeSorter::IS_LLVM),
+                      areDiagsSelfContained()) {}
 
 void EnumSizeCheck::storeOptions(ClangTidyOptions::OptionMap &Opts) {
   Options.store(Opts, "EnumIgnoreList",
                 utils::options::serializeStringList(EnumIgnoreList));
+  Options.store(Opts, "IncludeStyle", IncludeInserter.getStyle());
 }
 
 bool EnumSizeCheck::isLanguageVersionSupported(
     const LangOptions &LangOpts) const {
   return LangOpts.CPlusPlus11;
+}
+
+void EnumSizeCheck::registerPPCallbacks(const SourceManager &SM,
+                                        Preprocessor *PP,
+                                        Preprocessor *ModuleExpanderPP) {
+  IncludeInserter.registerPreprocessor(PP);
 }
 
 void EnumSizeCheck::registerMatchers(MatchFinder *Finder) {
@@ -127,12 +139,32 @@ void EnumSizeCheck::check(const MatchFinder::MatchResult &Result) {
   if (!NewType.first || Size <= NewType.second)
     return;
 
-  diag(MatchedDecl->getLocation(),
-       "enum %0 uses a larger base type (%1, size: %2 %select{byte|bytes}5) "
-       "than necessary for its value set, consider using '%3' (%4 "
-       "%select{byte|bytes}6) as the base type to reduce its size")
+  auto Diag =
+      diag(
+          MatchedDecl->getLocation(),
+          "enum %0 uses a larger base type (%1, size: %2 %select{byte|bytes}5) "
+          "than necessary for its value set, consider using '%3' (%4 "
+          "%select{byte|bytes}6) as the base type to reduce its size")
       << MatchedDecl << MatchedDecl->getIntegerType() << Size << NewType.first
       << NewType.second << (Size > 1U) << (NewType.second > 1U);
+
+  const SourceRange BaseTypeRange = MatchedDecl->getIntegerTypeRange();
+  if (BaseTypeRange.isValid()) {
+    if (BaseTypeRange.getBegin().isMacroID() ||
+        BaseTypeRange.getEnd().isMacroID())
+      return;
+    Diag << FixItHint::CreateReplacement(BaseTypeRange, NewType.first);
+  } else {
+    if (MatchedDecl->getLocation().isMacroID())
+      return;
+    Diag << FixItHint::CreateInsertion(
+        Lexer::getLocForEndOfToken(MatchedDecl->getLocation(), 0,
+                                   *Result.SourceManager, getLangOpts()),
+        (Twine(" : ") + NewType.first).str());
+  }
+
+  Diag << IncludeInserter.createIncludeInsertion(
+      Result.SourceManager->getFileID(MatchedDecl->getBeginLoc()), "<cstdint>");
 }
 
 } // namespace clang::tidy::performance
