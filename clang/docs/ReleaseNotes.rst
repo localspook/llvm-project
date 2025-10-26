@@ -211,6 +211,11 @@ New Compiler Flags
   higher), accurate source locations are used; otherwise, a heuristic fallback
   is used with a note suggesting how to enable debug info for better accuracy.
 
+- New option ``-fsanitize=fixed-point-divide-by-zero`` added to instrument
+  code involving fixed point numbers (``-ffixed-point``) with checks for
+  division by zero. Also added a new sanitizer group ``-fsanitize=fixed-point``
+  that includes the new option.
+
 Deprecated Compiler Flags
 -------------------------
 
