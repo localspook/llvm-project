@@ -45,6 +45,7 @@ Implemented Papers
 - P3060R3: Add ``std::views::indices(n)`` (`Github <https://llvm.org/PR148175>`__)
 - P2835R7: Expose ``std::atomic_ref``'s object address (`Github <https://llvm.org/PR118377>`__)
 - P3168R2: Give ``std::optional`` Range Support (`Github <https://llvm.org/PR105430>`__)
+- P3019R14: ``indirect`` and ``polymorphic``: Vocabulary Types for Composite Class Design (`Github <https://llvm.org/PR127887>`__)
 
 Improvements and New Features
 -----------------------------
