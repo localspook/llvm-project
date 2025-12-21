@@ -137,13 +137,13 @@ void UseInternalLinkageCheck::registerMatchers(MatchFinder *Finder) {
 }
 
 static constexpr StringRef Message =
-    "%0 %1 can be made static or moved into an anonymous namespace "
+    "%0 %1 can be made static %select{|or moved into an anonymous namespace }"
     "to enforce internal linkage";
 
 void UseInternalLinkageCheck::check(const MatchFinder::MatchResult &Result) {
   if (const auto *FD = Result.Nodes.getNodeAs<FunctionDecl>("fn")) {
     const DiagnosticBuilder DB = diag(FD->getLocation(), Message)
-                                 << "function" << FD;
+                                 << "function" << FD << getLangOpts().CPlusPlus;
     const SourceLocation FixLoc = FD->getInnerLocStart();
     if (FixLoc.isInvalid() || FixLoc.isMacroID())
       return;
@@ -159,7 +159,7 @@ void UseInternalLinkageCheck::check(const MatchFinder::MatchResult &Result) {
       return;
 
     const DiagnosticBuilder DB = diag(VD->getLocation(), Message)
-                                 << "variable" << VD;
+                                 << "variable" << VD << getLangOpts().CPlusPlus;
     const SourceLocation FixLoc = VD->getInnerLocStart();
     if (FixLoc.isInvalid() || FixLoc.isMacroID())
       return;
