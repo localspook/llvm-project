@@ -38,64 +38,42 @@ void StringViewConversionsCheck::registerMatchers(MatchFinder *Finder) {
   // Matches std::string construction from a string_view-convertible expression:
   //   - Direct construction: std::string{sv}, std::string{s}
   //   - Copy from existing string: std::string(s) where s is std::string
-  const auto RedundantStringConstruction = cxxConstructExpr(
-      hasType(IsStdString),
-      hasArgument(0, ignoringImplicit(ImplicitlyConvertibleToStringView)),
-      unless(hasArgument(1, unless(cxxDefaultArgExpr()))));
+  const auto RedundantStringConstruction =
+      cxxConstructExpr(
+          hasType(IsStdString),
+          hasArgument(0, ignoringImplicit(ImplicitlyConvertibleToStringView)),
+          unless(hasArgument(1, unless(cxxDefaultArgExpr()))))
+          .bind("redundantExpr");
 
   // Matches functional cast syntax: std::string(expr):
   // std::string(sv), std::string("literal")
-  const auto RedundantFunctionalCast = cxxFunctionalCastExpr(
-      hasType(IsStdString), hasDescendant(RedundantStringConstruction));
-
-  // Match method calls on std::string that modify or use the string,
-  // such as operator+, append(), substr(), c_str(), etc.
-  const auto HasStringOperatorCall = hasDescendant(cxxOperatorCallExpr(
-      hasOverloadedOperatorName("+"), hasType(IsStdString)));
-  const auto HasStringMethodCall =
-      hasDescendant(cxxMemberCallExpr(on(hasType(IsStdString))));
-
-  const auto IsCallReturningString = callExpr(hasType(IsStdString));
-  const auto IsImplicitStringViewFromCall =
-      cxxConstructExpr(hasType(IsStdStringView),
-                       hasArgument(0, ignoringImplicit(IsCallReturningString)));
+  const auto RedundantFunctionalCast =
+      cxxFunctionalCastExpr(hasType(IsStdString),
+                            hasDescendant(RedundantStringConstruction))
+          .bind("redundantExpr");
 
   // Main matcher: finds function calls where:
-  // 1. A parameter has type string_view
+  // 1. An expression has type string_view
   // 2. The corresponding argument contains a redundant std::string construction
   //    (either functional cast syntax or direct construction/brace init)
   // 3. The argument does NOT involve:
   //    - String concatenation with operator+ (string_view doesn't support it)
   //    - Method calls on the std::string (like append(), substr(), etc.)
   Finder->addMatcher(
-      callExpr(forEachArgumentWithParam(
-          expr(hasType(IsStdStringView),
-               // Ignore cases where the argument is a function call
-               unless(ignoringParenImpCasts(IsImplicitStringViewFromCall)),
-               // Match either syntax for std::string construction
-               hasDescendant(expr(anyOf(RedundantFunctionalCast,
-                                        RedundantStringConstruction))
-                                 .bind("redundantExpr")),
-               // Exclude cases of std::string methods or operator+ calls
-               unless(anyOf(HasStringOperatorCall, HasStringMethodCall)))
-              .bind("paramExpr"),
-          parmVarDecl(hasType(IsStdStringView)))),
+      cxxMemberCallExpr(
+          callee(memberExpr(
+              member(hasName("operator basic_string_view")),
+              has(ignoringImplicit(anyOf(RedundantFunctionalCast,
+                                         RedundantStringConstruction))))))
+          .bind("conversionExpr"),
       this);
 }
 
 void StringViewConversionsCheck::check(const MatchFinder::MatchResult &Result) {
-  const auto *ParamExpr = Result.Nodes.getNodeAs<Expr>("paramExpr");
+  const auto *ConversionExpr = Result.Nodes.getNodeAs<Expr>("conversionExpr");
   const auto *RedundantExpr = Result.Nodes.getNodeAs<Expr>("redundantExpr");
   const auto *OriginalExpr = Result.Nodes.getNodeAs<Expr>("originalStringView");
-  assert(RedundantExpr && ParamExpr && OriginalExpr);
-
-  // Sanity check. Verify that the redundant expression is the direct source of
-  // the argument, not part of a larger expression (e.g., std::string(sv) +
-  // "bar").
-  // FIXME: This is a temporary solution to avoid assertions. Instead the
-  // matcher must be fixed.
-  if (ParamExpr->getSourceRange() != RedundantExpr->getSourceRange())
-    return;
+  assert(RedundantExpr && ConversionExpr && OriginalExpr);
 
   const StringRef OriginalText = Lexer::getSourceText(
       CharSourceRange::getTokenRange(OriginalExpr->getSourceRange()),
@@ -106,7 +84,7 @@ void StringViewConversionsCheck::check(const MatchFinder::MatchResult &Result) {
 
   diag(RedundantExpr->getBeginLoc(),
        "redundant conversion to %0 and then back to %1")
-      << RedundantExpr->getType() << ParamExpr->getType()
+      << RedundantExpr->getType() << ConversionExpr->getType()
       << FixItHint::CreateReplacement(RedundantExpr->getSourceRange(),
                                       OriginalText);
 }
