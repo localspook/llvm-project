@@ -9,8 +9,13 @@
 #include "RenamerClangTidyCheck.h"
 #include "ASTUtils.h"
 #include "clang/AST/CXXInheritance.h"
+#include "clang/AST/DeclCXX.h"
+#include "clang/AST/Expr.h"
+#include "clang/AST/ExprCXX.h"
+#include "clang/AST/NestedNameSpecifierBase.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/Basic/CharInfo.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Lex/PPCallbacks.h"
@@ -212,179 +217,6 @@ private:
   RenamerClangTidyCheck *Check;
 };
 
-class RenamerClangTidyVisitor
-    : public RecursiveASTVisitor<RenamerClangTidyVisitor> {
-public:
-  RenamerClangTidyVisitor(RenamerClangTidyCheck *Check, const SourceManager &SM,
-                          bool AggressiveDependentMemberLookup)
-      : Check(Check), SM(SM),
-        AggressiveDependentMemberLookup(AggressiveDependentMemberLookup) {}
-
-  bool shouldVisitTemplateInstantiations() const { return true; }
-
-  bool shouldVisitImplicitCode() const { return false; }
-
-  bool VisitCXXConstructorDecl(CXXConstructorDecl *Decl) {
-    if (Decl->isImplicit())
-      return true;
-    Check->addUsage(Decl->getParent(), Decl->getNameInfo().getSourceRange(),
-                    SM);
-
-    for (const auto *Init : Decl->inits()) {
-      if (!Init->isWritten() || Init->isInClassMemberInitializer())
-        continue;
-      if (const FieldDecl *FD = Init->getAnyMember())
-        Check->addUsage(FD, SourceRange(Init->getMemberLocation()), SM);
-      // Note: delegating constructors and base class initializers are handled
-      // via the "typeLoc" matcher.
-    }
-
-    return true;
-  }
-
-  bool VisitCXXDestructorDecl(CXXDestructorDecl *Decl) {
-    if (Decl->isImplicit())
-      return true;
-    SourceRange Range = Decl->getNameInfo().getSourceRange();
-    if (Range.getBegin().isInvalid())
-      return true;
-
-    // The first token that will be found is the ~ (or the equivalent trigraph),
-    // we want instead to replace the next token, that will be the identifier.
-    Range.setBegin(CharSourceRange::getTokenRange(Range).getEnd());
-    Check->addUsage(Decl->getParent(), Range, SM);
-    return true;
-  }
-
-  bool VisitUsingDecl(UsingDecl *Decl) {
-    for (const auto *Shadow : Decl->shadows())
-      Check->addUsage(Shadow->getTargetDecl(),
-                      Decl->getNameInfo().getSourceRange(), SM);
-    return true;
-  }
-
-  bool VisitUsingDirectiveDecl(UsingDirectiveDecl *Decl) {
-    Check->addUsage(Decl->getNominatedNamespaceAsWritten(),
-                    Decl->getIdentLocation(), SM);
-    return true;
-  }
-
-  bool VisitNamedDecl(NamedDecl *Decl) {
-    const SourceRange UsageRange =
-        DeclarationNameInfo(Decl->getDeclName(), Decl->getLocation())
-            .getSourceRange();
-    Check->addUsage(Decl, UsageRange, SM);
-    return true;
-  }
-
-  bool VisitDeclRefExpr(DeclRefExpr *DeclRef) {
-    const SourceRange Range = DeclRef->getNameInfo().getSourceRange();
-    Check->addUsage(DeclRef->getDecl(), Range, SM);
-    return true;
-  }
-
-  bool TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc Loc) {
-    if (const NestedNameSpecifier Spec = Loc.getNestedNameSpecifier();
-        Spec.getKind() == NestedNameSpecifier::Kind::Namespace) {
-      if (const auto *Decl =
-              dyn_cast<NamespaceDecl>(Spec.getAsNamespaceAndPrefix().Namespace))
-        Check->addUsage(Decl, Loc.getLocalSourceRange(), SM);
-    }
-
-    using Base = RecursiveASTVisitor<RenamerClangTidyVisitor>;
-    return Base::TraverseNestedNameSpecifierLoc(Loc);
-  }
-
-  bool VisitMemberExpr(MemberExpr *MemberRef) {
-    const SourceRange Range = MemberRef->getMemberNameInfo().getSourceRange();
-    Check->addUsage(MemberRef->getMemberDecl(), Range, SM);
-    return true;
-  }
-
-  bool
-  VisitCXXDependentScopeMemberExpr(CXXDependentScopeMemberExpr *DepMemberRef) {
-    const QualType BaseType =
-        DepMemberRef->isArrow() ? DepMemberRef->getBaseType()->getPointeeType()
-                                : DepMemberRef->getBaseType();
-    if (BaseType.isNull())
-      return true;
-    const CXXRecordDecl *Base = BaseType.getTypePtr()->getAsCXXRecordDecl();
-    if (!Base)
-      return true;
-    const DeclarationName DeclName =
-        DepMemberRef->getMemberNameInfo().getName();
-    if (!DeclName.isIdentifier())
-      return true;
-    const StringRef DependentName = DeclName.getAsIdentifierInfo()->getName();
-
-    if (const NameLookup Resolved = findDeclInBases(
-            *Base, DependentName, AggressiveDependentMemberLookup)) {
-      if (*Resolved)
-        Check->addUsage(*Resolved,
-                        DepMemberRef->getMemberNameInfo().getSourceRange(), SM);
-    }
-
-    return true;
-  }
-
-  bool VisitTypedefTypeLoc(const TypedefTypeLoc &Loc) {
-    Check->addUsage(Loc.getDecl(), Loc.getNameLoc(), SM);
-    return true;
-  }
-
-  bool VisitTagTypeLoc(const TagTypeLoc &Loc) {
-    Check->addUsage(Loc.getDecl(), Loc.getNameLoc(), SM);
-    return true;
-  }
-
-  bool VisitUnresolvedUsingTypeLoc(const UnresolvedUsingTypeLoc &Loc) {
-    Check->addUsage(Loc.getDecl(), Loc.getNameLoc(), SM);
-    return true;
-  }
-
-  bool VisitTemplateTypeParmTypeLoc(const TemplateTypeParmTypeLoc &Loc) {
-    Check->addUsage(Loc.getDecl(), Loc.getNameLoc(), SM);
-    return true;
-  }
-
-  bool
-  VisitTemplateSpecializationTypeLoc(const TemplateSpecializationTypeLoc &Loc) {
-    const TemplateDecl *Decl =
-        Loc.getTypePtr()->getTemplateName().getAsTemplateDecl(
-            /*IgnoreDeduced=*/true);
-    if (!Decl)
-      return true;
-
-    if (const auto *ClassDecl = dyn_cast<TemplateDecl>(Decl))
-      if (const NamedDecl *TemplDecl = ClassDecl->getTemplatedDecl())
-        Check->addUsage(TemplDecl, Loc.getTemplateNameLoc(), SM);
-
-    return true;
-  }
-
-  bool VisitDesignatedInitExpr(DesignatedInitExpr *Expr) {
-    for (const DesignatedInitExpr::Designator &D : Expr->designators()) {
-      if (!D.isFieldDesignator())
-        continue;
-      const FieldDecl *FD = D.getFieldDecl();
-      if (!FD)
-        continue;
-      const IdentifierInfo *II = FD->getIdentifier();
-      if (!II)
-        continue;
-      const SourceRange FixLocation{D.getFieldLoc(), D.getFieldLoc()};
-      Check->addUsage(FD, FixLocation, SM);
-    }
-
-    return true;
-  }
-
-private:
-  RenamerClangTidyCheck *Check;
-  const SourceManager &SM;
-  const bool AggressiveDependentMemberLookup;
-};
-
 } // namespace
 
 RenamerClangTidyCheck::RenamerClangTidyCheck(StringRef CheckName,
@@ -397,10 +229,6 @@ RenamerClangTidyCheck::~RenamerClangTidyCheck() = default;
 void RenamerClangTidyCheck::storeOptions(ClangTidyOptions::OptionMap &Opts) {
   Options.store(Opts, "AggressiveDependentMemberLookup",
                 AggressiveDependentMemberLookup);
-}
-
-void RenamerClangTidyCheck::registerMatchers(MatchFinder *Finder) {
-  Finder->addMatcher(translationUnitDecl(), this);
 }
 
 void RenamerClangTidyCheck::registerPPCallbacks(
@@ -509,16 +337,149 @@ void RenamerClangTidyCheck::addUsage(const NamedDecl *Decl,
   }
 }
 
+void RenamerClangTidyCheck::registerMatchers(MatchFinder *Finder) {
+  Finder->addMatcher(namedDecl().bind("decl"), this); // 1.6 s
+  Finder->addMatcher(typeLoc().bind("typeLoc"), this); // 1.1 s
+  // Finder->addMatcher(expr().bind("expr"), this); // 1.2 s
+  Finder->addMatcher(declRefExpr().bind("expr"), this); 
+  Finder->addMatcher(cxxDependentScopeMemberExpr().bind("expr"), this); 
+  Finder->addMatcher(memberExpr().bind("expr"), this); 
+  Finder->addMatcher(designatedInitExpr().bind("expr"), this); 
+  Finder->addMatcher(nestedNameSpecifierLoc().bind("nns"), this); // 0.1 s
+}
+
 void RenamerClangTidyCheck::check(const MatchFinder::MatchResult &Result) {
-  if (!Result.SourceManager) {
-    // In principle SourceManager is not null but going only by the definition
-    // of MatchResult it must be handled. Cannot rename anything without a
-    // SourceManager.
+  const SourceManager &SM = *Result.SourceManager;
+
+  if (const auto *D = Result.Nodes.getNodeAs<NamedDecl>("decl")) {
+    if (const auto *Ctor = dyn_cast<CXXConstructorDecl>(D)) {
+      if (Ctor->isImplicit())
+        return;
+      addUsage(Ctor->getParent(), Ctor->getNameInfo().getSourceRange(), SM);
+
+      for (const auto *Init : Ctor->inits()) {
+        if (!Init->isWritten() || Init->isInClassMemberInitializer())
+          continue;
+        if (const FieldDecl *FD = Init->getAnyMember())
+          addUsage(FD, SourceRange(Init->getMemberLocation()), SM);
+        // Note: delegating constructors and base class initializers are handled
+        // via the "typeLoc" matcher.
+      }
+    } else if (const auto *Dtor = dyn_cast<CXXDestructorDecl>(D)) {
+      if (Dtor->isImplicit())
+        return;
+      SourceRange Range = Dtor->getNameInfo().getSourceRange();
+      if (Range.getBegin().isInvalid())
+        return;
+
+      // The first token that will be found is the ~ (or the equivalent
+      // trigraph), we want instead to replace the next token, that will be the
+      // identifier.
+      Range.setBegin(CharSourceRange::getTokenRange(Range).getEnd());
+      addUsage(Dtor->getParent(), Range, SM);
+    } else if (const auto *Using = dyn_cast<UsingDecl>(D)) {
+      for (const auto *Shadow : Using->shadows())
+        addUsage(Shadow->getTargetDecl(), Using->getNameInfo().getSourceRange(),
+                 SM);
+    } else if (const auto *UsingDirective = dyn_cast<UsingDirectiveDecl>(D)) {
+      addUsage(UsingDirective->getNominatedNamespaceAsWritten(),
+               UsingDirective->getIdentLocation(), SM);
+    } else {
+      const SourceRange UsageRange =
+          DeclarationNameInfo(D->getDeclName(), D->getLocation())
+              .getSourceRange();
+      addUsage(D, UsageRange, SM);
+    }
+
     return;
   }
-  RenamerClangTidyVisitor Visitor(this, *Result.SourceManager,
-                                  AggressiveDependentMemberLookup);
-  Visitor.TraverseAST(*Result.Context);
+
+  if (const auto *TL = Result.Nodes.getNodeAs<TypeLoc>("typeLoc")) {
+    if (const auto TTL = TL->getAs<TypedefTypeLoc>()) {
+      addUsage(TTL.getDecl(), TTL.getNameLoc(), SM);
+    } else if (const auto Tag = TL->getAs<TagTypeLoc>()) {
+      addUsage(Tag.getDecl(), Tag.getNameLoc(), SM);
+    } else if (const auto UnresolvedUsing =
+                   TL->getAs<UnresolvedUsingTypeLoc>()) {
+      addUsage(UnresolvedUsing.getDecl(), UnresolvedUsing.getNameLoc(), SM);
+    } else if (const auto TTP = TL->getAs<TemplateTypeParmTypeLoc>()) {
+      addUsage(TTP.getDecl(), TTP.getNameLoc(), SM);
+    } else if (const auto TS = TL->getAs<TemplateSpecializationTypeLoc>()) {
+      const TemplateDecl *Decl =
+          TS.getTypePtr()->getTemplateName().getAsTemplateDecl(
+              /*IgnoreDeduced=*/true);
+      if (!Decl)
+        return;
+
+      if (const auto *ClassDecl = dyn_cast<TemplateDecl>(Decl))
+        if (const NamedDecl *TemplDecl = ClassDecl->getTemplatedDecl())
+          addUsage(TemplDecl, TS.getTemplateNameLoc(), SM);
+    }
+
+    return;
+  }
+
+  if (const auto *E = Result.Nodes.getNodeAs<Expr>("expr")) {
+    if (const auto *DeclRef = dyn_cast<DeclRefExpr>(E)) {
+      const SourceRange Range = DeclRef->getNameInfo().getSourceRange();
+      addUsage(DeclRef->getDecl(), Range, SM);
+    } else if (const auto *MemberRef = dyn_cast<MemberExpr>(E)) {
+      const SourceRange Range = MemberRef->getMemberNameInfo().getSourceRange();
+      addUsage(MemberRef->getMemberDecl(), Range, SM);
+    } else if (const auto *DepMemberRef =
+                   dyn_cast<CXXDependentScopeMemberExpr>(E)) {
+      const QualType BaseType =
+          DepMemberRef->isArrow()
+              ? DepMemberRef->getBaseType()->getPointeeType()
+              : DepMemberRef->getBaseType();
+      if (BaseType.isNull())
+        return;
+      const CXXRecordDecl *Base = BaseType.getTypePtr()->getAsCXXRecordDecl();
+      if (!Base)
+        return;
+      const DeclarationName DeclName =
+          DepMemberRef->getMemberNameInfo().getName();
+      if (!DeclName.isIdentifier())
+        return;
+      const StringRef DependentName = DeclName.getAsIdentifierInfo()->getName();
+
+      if (const NameLookup Resolved = findDeclInBases(
+              *Base, DependentName, AggressiveDependentMemberLookup)) {
+        if (*Resolved)
+          addUsage(*Resolved,
+                   DepMemberRef->getMemberNameInfo().getSourceRange(), SM);
+      }
+    } else if (const auto *DesignatedInit = dyn_cast<DesignatedInitExpr>(E)) {
+      for (const DesignatedInitExpr::Designator &D :
+           DesignatedInit->designators()) {
+        if (!D.isFieldDesignator())
+          continue;
+        const FieldDecl *FD = D.getFieldDecl();
+        if (!FD)
+          continue;
+        const IdentifierInfo *II = FD->getIdentifier();
+        if (!II)
+          continue;
+        const SourceRange FixLocation{D.getFieldLoc(), D.getFieldLoc()};
+        addUsage(FD, FixLocation, SM);
+      }
+    }
+
+    return;
+  }
+
+  if (const auto *NNS = Result.Nodes.getNodeAs<NestedNameSpecifierLoc>("nns")) {
+    if (const NestedNameSpecifier Spec = NNS->getNestedNameSpecifier();
+        Spec.getKind() == NestedNameSpecifier::Kind::Namespace) {
+      if (const auto *Decl =
+              dyn_cast<NamespaceDecl>(Spec.getAsNamespaceAndPrefix().Namespace))
+        addUsage(Decl, NNS->getLocalSourceRange(), SM);
+    }
+
+    return;
+  }
+
+  llvm_unreachable("");
 }
 
 void RenamerClangTidyCheck::checkMacro(const Token &MacroNameTok,

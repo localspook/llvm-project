@@ -39,6 +39,9 @@ public:
   void registerPPCallbacks(const SourceManager &SM, Preprocessor *PP,
                            Preprocessor *ModuleExpanderPP) final;
   void onEndOfTranslationUnit() final;
+  std::optional<TraversalKind> getCheckTraversalKind() const override {
+    return TK_IgnoreUnlessSpelledInSource;
+  }
 
   /// Derived classes that override this function should call this method from
   /// the overridden method.
