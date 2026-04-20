@@ -257,12 +257,16 @@ Changes in existing checks
   <clang-tidy/checks/bugprone/std-namespace-modification>` check by fixing
   false positives when extending the standard library with a specialization of
   user-defined type and by removing detection of the compiler generated ``std``
-  namespace extensions. 
+  namespace extensions.
 
 - Improved :doc:`bugprone-string-constructor
   <clang-tidy/checks/bugprone/string-constructor>` check to detect suspicious
   string constructor calls when the string class constructor has a default
   allocator argument.
+
+- Improved :doc:`bugprone-stringview-nullptr
+  <clang-tidy/checks/bugprone/stringview-nullptr>` to flag more subtle
+  cases where a string view is initialized from a ``nullptr``.
 
 - Improved :doc:`bugprone-unchecked-optional-access
   <clang-tidy/checks/bugprone/unchecked-optional-access>` to recognize common
