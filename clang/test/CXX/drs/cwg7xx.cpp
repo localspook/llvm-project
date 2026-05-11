@@ -335,6 +335,14 @@ namespace cwg727 { // cwg727: partial
   Collision<int, int> c; // #cwg727-Collision-int-int
 } // namespace cwg727
 
+namespace cwg738 { // cwg738: 2.7
+#if __cplusplus >= 201103L
+struct S {
+  constexpr S() {}
+};
+#endif
+} // namespace cwg738
+
 namespace cwg777 { // cwg777: 3.7
 #if __cplusplus >= 201103L
 template <typename... T>
